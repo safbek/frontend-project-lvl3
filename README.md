@@ -5,3 +5,6 @@
 
 
 <a href="https://github.com/safbek/frontend-project-lvl3/actions"><img src="https://github.com/safbek/frontend-project-lvl3/workflows/Node%20CI/badge.svg" alt="Node CI" style="max-width:100%;"></a>
+
+
+<a href="https://frontend-project-lvl3-50i0b7g3p-safbek.vercel.app/" alt="RSS-агрегатор" style="max-width:100%;">RSS-агрегатор</a>
