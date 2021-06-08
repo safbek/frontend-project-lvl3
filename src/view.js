@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import i18next from 'i18next';
 import parse from './parse';
 
 const axios = require('axios');
@@ -25,10 +26,12 @@ const generateId = (state, parsedData, link) => {
 };
 
 // HANDELER ****************************************************
-const getSubmitHandler = ((stateProxy) => (event) => {
+const getSubmitHandler = ((state) => (event) => {
+  const stateProxy = state;
   event.preventDefault();
 
   const rssLink = document.querySelector('.input-value').value;
+  const feedback = document.querySelector('.feedback');
 
   const validUrlSchema = yup.string().url();
   const proxy = 'https://hexlet-allorigins.herokuapp.com';
@@ -39,7 +42,8 @@ const getSubmitHandler = ((stateProxy) => (event) => {
     .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
     .then((data) => {
       if (data.getElementsByTagName('parsererror').length) {
-        stateProxy.validationState.errors.push('Ресурс не содержит валидный Rss');
+        stateProxy.validationState.valid = false;
+        feedback.textContent = i18next.t('parseError');
         return;
       }
 
@@ -47,7 +51,8 @@ const getSubmitHandler = ((stateProxy) => (event) => {
       const links = stateProxy.updates.feeds.map((item) => item.link);
 
       if (links.includes(rssLink)) {
-        stateProxy.validationState.errors.push('RSS уже существует');
+        stateProxy.validationState.valid = false;
+        feedback.textContent = i18next.t('rssAlreadyExists');
         return;
       }
 
@@ -59,9 +64,10 @@ const getSubmitHandler = ((stateProxy) => (event) => {
       stateProxy.updates.posts.push(...posts);
     })
     .catch(() => {
-      stateProxy.validationState.errors.push('Ссылка должна быть валидным URL');
+      stateProxy.validationState.valid = false;
       const form = document.querySelector('.form-control');
       form.classList.add('is-invalid');
+      feedback.textContent = i18next.t('url');
     });
 });
 

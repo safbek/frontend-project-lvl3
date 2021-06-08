@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 // RENDER **************************************************
 const renderFeed = (container, feeds) => {
   const feedsContainer = container;
@@ -5,13 +7,12 @@ const renderFeed = (container, feeds) => {
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = 'Фиды';
+  h2.textContent = i18next.t('feeds');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
 
   const reversedFeeds = feeds.reverse();
-  // console.log(reversedFeeds);
 
   reversedFeeds.forEach((feed) => {
     const li = document.createElement('li');
@@ -41,7 +42,7 @@ const renderPosts = (container, posts) => {
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = 'Посты';
+  h2.textContent = i18next.t('feeds');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
@@ -75,10 +76,15 @@ const render = (path, value) => {
   const form = document.querySelector('.form-control');
 
   // вынести стили в css.Создать классы danger, success
-  if (path === 'validationState.errors') {
+  if (path === 'validationState.valid') {
     // console.log(value);
-    feedback.textContent = value[value.length - 1];
-    feedback.classList.add('text-danger');
+    // feedback.textContent = value[value.length - 1];
+    if (!value) {
+      console.log('haaaaa')
+      feedback.classList.remove('text-success');
+      feedback.classList.add('text-danger');
+    }
+    // feedback.innerHTML = 'обработать ошибку';
   }
 
   if (path === 'updates.feeds') {
@@ -88,13 +94,13 @@ const render = (path, value) => {
     form.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
-    feedback.textContent = 'Rss успешно загружен';
+    feedback.textContent = i18next.t('rssAddedSuccessfully');
     renderFeed(feeds, value);
   }
 
   if (path === 'updates.posts') {
     // console.log(value);
-    feedback.textContent = 'Rss успешно загружен';
+    // feedback.textContent = 'Rss';
     renderPosts(posts, value);
   }
 };
