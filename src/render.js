@@ -51,13 +51,25 @@ const renderPosts = (container, posts) => {
 
   reversedPosts.forEach((post) => {
     const li = document.createElement('li');
-    li.classList.add('list-group-item');
+    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const a = document.createElement('a');
+    a.setAttribute('data-id', post.id);
+    a.setAttribute('target', 'blank');
     a.textContent = post.title;
     a.href = post.link;
+    a.classList.add('font-weight-bold');
+
+    const button = document.createElement('button');
+    button.classList.add('btn', 'btn-post-preview', 'btn-outline-primary', 'btn-sm');
+    button.setAttribute('data-id', post.id);
+    button.setAttribute('type', 'button');
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#myModal');
+    button.textContent = 'Просмотр';
 
     li.appendChild(a);
+    li.appendChild(button);
     ul.appendChild(li);
   });
 
@@ -77,14 +89,10 @@ const render = (path, value) => {
 
   // вынести стили в css.Создать классы danger, success
   if (path === 'validationState.valid') {
-    // console.log(value);
-    // feedback.textContent = value[value.length - 1];
     if (!value) {
-      console.log('haaaaa')
       feedback.classList.remove('text-success');
       feedback.classList.add('text-danger');
     }
-    // feedback.innerHTML = 'обработать ошибку';
   }
 
   if (path === 'updates.feeds') {
@@ -99,9 +107,19 @@ const render = (path, value) => {
   }
 
   if (path === 'updates.posts') {
-    // console.log(value);
-    // feedback.textContent = 'Rss';
     renderPosts(posts, value);
+  }
+
+  if (path === 'uiState.openPosts') {
+    const links = document.querySelectorAll('a');
+    links.forEach((el) => {
+      const post = el;
+      const postId = Number(el.dataset.id);
+      if (value.includes(postId)) {
+        post.classList.add('font-weight-normal');
+        post.style.color = '#6c757d';
+      }
+    });
   }
 };
 

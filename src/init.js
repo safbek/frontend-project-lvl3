@@ -1,6 +1,8 @@
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './css/custom.css';
 
+import '../node_modules/bootstrap/dist/js/bootstrap.js';
+
 import i18next from 'i18next';
 import ru from './dictionaries';
 
@@ -17,11 +19,14 @@ const init = async () => {
 
   const state = {
     validationState: {
-      errors: [],
+      valid: true,
     },
     updates: {
       feeds: [],
       posts: [],
+    },
+    uiState: {
+      openPosts: [],
     },
   };
 
@@ -29,7 +34,6 @@ const init = async () => {
 
   const form = document.querySelector('.rss-form');
   form.addEventListener('submit', getSubmitHandler(watchedState));
-
   console.log(state);
 };
 

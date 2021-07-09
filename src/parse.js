@@ -8,7 +8,8 @@ const parse = (xml) => {
   const items = [...elements].map((element) => {
     const titleItem = element.querySelector('title').textContent;
     const linkItem = element.querySelector('link').textContent;
-    return { titleItem, linkItem };
+    const postDescription = element.querySelector('description').textContent;
+    return { titleItem, linkItem, postDescription };
   });
   return {
     title, description, link, items,
