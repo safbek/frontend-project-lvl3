@@ -41,7 +41,7 @@ const getSubmitHandler = ((state) => (event) => {
   const originalState = onChange.target(state);
 
   validUrlSchema.validate(rssLink)
-    .then(() => axios(`${proxy}/get?url=${rssLink}`))
+    .then(() => axios(`${proxy}/get?disableCache=true&url=${rssLink}`))
     .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
     .then((data) => {
       if (data.getElementsByTagName('parsererror').length) {

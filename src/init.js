@@ -32,7 +32,9 @@ const init = async () => {
   const watchedState = onChange(state, render);
 
   const form = document.querySelector('.rss-form');
-  form.addEventListener('submit', getSubmitHandler(watchedState));
+  if (form) {
+    form.addEventListener('submit', getSubmitHandler(watchedState));
+  }
 };
 
 init().catch(() => {});
