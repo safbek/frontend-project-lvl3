@@ -90,7 +90,6 @@ const getSubmitHandler = ((state) => (event) => {
           const fullArticleLink = document.querySelector('.full-article');
           fullArticleLink.setAttribute('href', openedPost[0].link);
 
-          // stateProxy.uiState.openPosts.push({ postId: openedPost[0].id });
           stateProxy.uiState.openPosts.push(openedPost[0].id);
         });
       });
@@ -130,7 +129,9 @@ const getSubmitHandler = ((state) => (event) => {
                 stateProxy.updates.posts.push(...newLinks);
               }
             })
-            .catch((err) => err);
+            .catch(() => {
+              feedback.textContent = i18next.t('networkError');
+            });
         });
         setTimeout(updatePosts, 20000);
       }, 20000);
