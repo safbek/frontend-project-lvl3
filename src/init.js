@@ -33,7 +33,6 @@ const init = async () => {
 
   const form = document.querySelector('.rss-form');
   form.addEventListener('submit', getSubmitHandler(watchedState));
-  console.log(state);
 };
 
 export default init;
