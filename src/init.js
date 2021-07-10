@@ -1,7 +1,6 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import './css/custom.css';
-
-import '../node_modules/bootstrap/dist/js/bootstrap.js';
 
 import i18next from 'i18next';
 import ru from './dictionaries';
