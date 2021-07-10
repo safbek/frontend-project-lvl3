@@ -66,7 +66,8 @@ const getSubmitHandler = ((state) => (event) => {
       stateProxy.updates.feeds.push(feed);
       stateProxy.updates.posts.push(...posts);
 
-      Array.from(document.getElementsByTagName('a')).forEach((link) => {
+      const href = document.querySelectorAll('a');
+      href.forEach((link) => {
         link.addEventListener('click', (el) => {
           const postId = Number(el.target.dataset.id);
           stateProxy.uiState.openPosts.push(postId);
