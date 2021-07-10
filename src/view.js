@@ -130,6 +130,7 @@ const getSubmitHandler = ((state) => (event) => {
               }
             })
             .catch(() => {
+              stateProxy.validationState.valid = false;
               feedback.textContent = i18next.t('networkError');
             });
         });
