@@ -35,4 +35,6 @@ const init = async () => {
   form.addEventListener('submit', getSubmitHandler(watchedState));
 };
 
+init().catch(() => {});
+
 export default init;

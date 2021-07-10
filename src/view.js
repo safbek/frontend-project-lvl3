@@ -114,7 +114,6 @@ const getSubmitHandler = ((state) => (event) => {
               const filtered = newPostLinks.filter((link) => !currentPostLinks.includes(link));
 
               const newPosts = parsedData.items.filter((item) => filtered.includes(item.linkItem));
-              console.log(newPosts);
 
               const newLinks = newPosts.reduce((acc, item, index) => {
                 const post = {
@@ -131,7 +130,7 @@ const getSubmitHandler = ((state) => (event) => {
                 stateProxy.updates.posts.push(...newLinks);
               }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => err);
         });
         setTimeout(updatePosts, 20000);
       }, 20000);
