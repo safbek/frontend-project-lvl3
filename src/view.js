@@ -94,11 +94,16 @@ const getSubmitHandler = ((state) => (event) => {
         });
       });
     })
-    .catch(() => {
-      stateProxy.validationState.valid = false;
-      const form = document.querySelector('.form-control');
-      form.classList.add('is-invalid');
-      feedback.textContent = i18next.t('url');
+    .catch((e) => {
+      if (e.message === 'Network Error') {
+        stateProxy.validationState.valid = false;
+        feedback.textContent = i18next.t('networkError');
+      } else if (e.message === 'this must be a valid URL') {
+        stateProxy.validationState.valid = false;
+        const form = document.querySelector('.form-control');
+        form.classList.add('is-invalid');
+        feedback.textContent = i18next.t('url');
+      }
     })
     .finally(() => {
       setTimeout(function updatePosts() {
@@ -128,11 +133,11 @@ const getSubmitHandler = ((state) => (event) => {
               if (newLinks.length > 0 && !currentPostLinks.includes(newLinks.link)) {
                 stateProxy.updates.posts.push(...newLinks);
               }
-            })
-            .catch(() => {
-              stateProxy.validationState.valid = false;
-              feedback.textContent = i18next.t('networkError');
             });
+            // .catch(() => {
+            //   stateProxy.validationState.valid = false;
+            //   feedback.textContent = i18next.t('networkError');
+            // });
         });
         setTimeout(updatePosts, 20000);
       }, 20000);
