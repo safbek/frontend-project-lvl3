@@ -37,12 +37,12 @@ const getSubmitHandler = ((state) => (event) => {
   const feedback = document.querySelector('.feedback');
 
   const validUrlSchema = yup.string().url();
-  const proxy = 'https://hexlet-allorigins.herokuapp.com';
+  const proxy = 'https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url';
   const parseXml = new DOMParser();
   const originalState = onChange.target(state);
 
   validUrlSchema.validate(rssLink)
-    .then(() => axios(`${proxy}/get?disableCache=true&url=${rssLink}`))
+    .then(() => axios(`${proxy}=${rssLink}`))
     .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
     .then((data) => {
       if (data.getElementsByTagName('parsererror').length) {
