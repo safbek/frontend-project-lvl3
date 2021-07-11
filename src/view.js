@@ -82,9 +82,7 @@ const getSubmitHandler = ((state) => (event) => {
       }
     })
     .finally(() => {
-      const uri = document.querySelector('.url');
       stateProxy.validationState.state = 'filling';
-      console.log(uri);
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
