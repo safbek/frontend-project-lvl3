@@ -32,7 +32,6 @@ const generateId = (state, parsedData, link) => {
 const getSubmitHandler = ((state) => (event) => {
   const stateProxy = state;
   event.preventDefault();
-  stateProxy.validationState.state = 'processing';
 
   const rssLink = document.querySelector('.input-value').value;
   const feedback = document.querySelector('.feedback');
@@ -51,7 +50,7 @@ const getSubmitHandler = ((state) => (event) => {
         feedback.textContent = i18next.t('parseError');
         return;
       }
-
+      stateProxy.validationState.state = 'processing';
       const parsedData = parse(data);
       const links = stateProxy.updates.feeds.map((item) => item.link);
 
