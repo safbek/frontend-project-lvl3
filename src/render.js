@@ -42,7 +42,7 @@ const renderPosts = (container, posts) => {
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = i18next.t('feeds');
+  h2.textContent = i18next.t('posts');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
@@ -66,7 +66,7 @@ const renderPosts = (container, posts) => {
     button.setAttribute('type', 'button');
     button.setAttribute('data-toggle', 'modal');
     button.setAttribute('data-target', '#myModal');
-    button.textContent = 'Просмотр';
+    button.textContent = i18next.t('view');
 
     li.appendChild(a);
     li.appendChild(button);
@@ -95,8 +95,20 @@ const render = (path, value) => {
     }
   }
 
-  if (path === 'updates.feeds') {
+  if (path === 'validationState.state' && value === 'processing') {
     // console.log(value);
+    // console.log(document.querySelector('.url'));
+    document.querySelector('.url').readOnly = true;
+    document.querySelector('.btn-add').disable = true;
+  }
+
+  if (path === 'validationState.state' && value === 'filling') {
+    console.log(value);
+    document.querySelector('.url').readOnly = false;
+    document.querySelector('.btn-add').disable = false;
+  }
+
+  if (path === 'updates.feeds') {
     form.value = '';
     form.focus();
     form.classList.remove('is-invalid');

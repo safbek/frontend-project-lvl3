@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import i18next from 'i18next';
 import onChange from 'on-change';
 import parse from './parse';
+import handlerFullPost from './handlerFullPost';
 
 const axios = require('axios');
 
@@ -31,6 +32,7 @@ const generateId = (state, parsedData, link) => {
 const getSubmitHandler = ((state) => (event) => {
   const stateProxy = state;
   event.preventDefault();
+  stateProxy.validationState.state = 'processing';
 
   const rssLink = document.querySelector('.input-value').value;
   const feedback = document.querySelector('.feedback');
@@ -66,33 +68,7 @@ const getSubmitHandler = ((state) => (event) => {
       stateProxy.updates.feeds.push(feed);
       stateProxy.updates.posts.push(...posts);
 
-      const href = document.querySelectorAll('a');
-      href.forEach((link) => {
-        link.addEventListener('click', (el) => {
-          const postId = Number(el.target.dataset.id);
-          stateProxy.uiState.openPosts.push(postId);
-        });
-      });
-
-      Array.from(document.getElementsByClassName('btn-post-preview')).forEach((button) => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          const reviewPost = Number(e.target.dataset.id);
-          const openedPost = originalState.updates.posts.filter((post) => post.id === reviewPost);
-
-          // to pass data into modal
-          const modalTitle = document.querySelector('.modal-title');
-          const modalBody = document.querySelector('.modal-body');
-          modalTitle.textContent = openedPost[0].title;
-          modalBody.textContent = openedPost[0].description;
-
-          // access to full article
-          const fullArticleLink = document.querySelector('.full-article');
-          fullArticleLink.setAttribute('href', openedPost[0].link);
-
-          stateProxy.uiState.openPosts.push(openedPost[0].id);
-        });
-      });
+      handlerFullPost(stateProxy);
     })
     .catch((e) => {
       if (e.message === 'Network Error') {
@@ -106,6 +82,9 @@ const getSubmitHandler = ((state) => (event) => {
       }
     })
     .finally(() => {
+      const uri = document.querySelector('.url');
+      stateProxy.validationState.state = 'filling';
+      console.log(uri);
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
@@ -134,10 +113,6 @@ const getSubmitHandler = ((state) => (event) => {
                 stateProxy.updates.posts.push(...newLinks);
               }
             });
-            // .catch(() => {
-            //   stateProxy.validationState.valid = false;
-            //   feedback.textContent = i18next.t('networkError');
-            // });
         });
         setTimeout(updatePosts, 20000);
       }, 20000);

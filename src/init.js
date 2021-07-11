@@ -19,6 +19,7 @@ const init = async () => {
   const state = {
     validationState: {
       valid: true,
+      state: 'filling',
     },
     updates: {
       feeds: [],
