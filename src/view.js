@@ -36,6 +36,14 @@ const getSubmitHandler = ((state) => (event) => {
   const rssLink = document.querySelector('.input-value').value;
   const feedback = document.querySelector('.feedback');
 
+  const links = stateProxy.updates.feeds.map((item) => item.link);
+
+  if (links.includes(rssLink)) {
+    stateProxy.validationState.valid = false;
+    feedback.textContent = i18next.t('rssAlreadyExists');
+    return;
+  }
+
   const validUrlSchema = yup.string().url();
   const proxy = 'https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url';
   const parseXml = new DOMParser();
@@ -52,13 +60,6 @@ const getSubmitHandler = ((state) => (event) => {
       }
       stateProxy.validationState.state = 'processing';
       const parsedData = parse(data);
-      const links = stateProxy.updates.feeds.map((item) => item.link);
-
-      if (links.includes(rssLink)) {
-        stateProxy.validationState.valid = false;
-        feedback.textContent = i18next.t('rssAlreadyExists');
-        return;
-      }
 
       const generatedFeed = generateId(originalState.updates, parsedData, rssLink);
       const { feed } = generatedFeed;
