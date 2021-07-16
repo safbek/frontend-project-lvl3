@@ -65,15 +65,17 @@ const getSubmitHandler = ((state) => (event) => {
       handlerFullPost(stateProxy);
     })
     .catch((e) => {
-      stateProxy.validationState.valid = false;
-      if (e.message === 'this must not be one of the following values') {
-        feedback.textContent = i18next.t('rssAlreadyExists');
-      } else if (e.message === 'Network Error') {
+      if (e.message === 'Network Error') {
+        stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('networkError');
       } else if (e.message === 'this must be a valid URL') {
         const form = document.querySelector('.form-control');
         form.classList.add('is-invalid');
+        stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('url');
+      } else {
+        stateProxy.validationState.valid = false;
+        feedback.textContent = i18next.t('rssAlreadyExists');
       }
     })
     .finally(() => {
