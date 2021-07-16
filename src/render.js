@@ -96,16 +96,15 @@ const render = (path, value) => {
   }
 
   if (path === 'validationState.state' && value === 'processing') {
-    // console.log(value);
-    // console.log(document.querySelector('.url'));
+    console.log(value);
     document.querySelector('.url').readOnly = true;
-    document.querySelector('.btn-add').disable = true;
+    document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
+    console.log(document.querySelector('.btn-add'));
   }
 
   if (path === 'validationState.state' && value === 'filling') {
-    // console.log(value);
     document.querySelector('.url').readOnly = false;
-    document.querySelector('.btn-add').disable = false;
+    document.querySelector('.btn-add').removeAttribute('disabled');
   }
 
   if (path === 'updates.feeds') {
