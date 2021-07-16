@@ -38,13 +38,7 @@ const getSubmitHandler = ((state) => (event) => {
 
   const links = stateProxy.updates.feeds.map((item) => item.link);
 
-  if (links.includes(rssLink)) {
-    stateProxy.validationState.valid = false;
-    feedback.textContent = i18next.t('rssAlreadyExists');
-    return;
-  }
-
-  const validUrlSchema = yup.string().url();
+  const validUrlSchema = yup.string().url().notOneOf(links);
   const proxy = 'https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url';
   const parseXml = new DOMParser();
   const originalState = onChange.target(state);
@@ -71,11 +65,12 @@ const getSubmitHandler = ((state) => (event) => {
       handlerFullPost(stateProxy);
     })
     .catch((e) => {
-      if (e.message === 'Network Error') {
-        stateProxy.validationState.valid = false;
+      stateProxy.validationState.valid = false;
+      if (e.message === 'this must not be one of the following values') {
+        feedback.textContent = i18next.t('rssAlreadyExists');
+      } else if (e.message === 'Network Error') {
         feedback.textContent = i18next.t('networkError');
       } else if (e.message === 'this must be a valid URL') {
-        stateProxy.validationState.valid = false;
         const form = document.querySelector('.form-control');
         form.classList.add('is-invalid');
         feedback.textContent = i18next.t('url');
