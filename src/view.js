@@ -47,12 +47,12 @@ const getSubmitHandler = ((state) => (event) => {
     .then(() => axios(`${proxy}=${rssLink}`))
     .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
     .then((data) => {
-      stateProxy.validationState.state = 'processing';
       if (data.getElementsByTagName('parsererror').length) {
         stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('parseError');
         return;
       }
+      stateProxy.validationState.state = 'processing';
       const parsedData = parse(data);
 
       const generatedFeed = generateId(originalState.updates, parsedData, rssLink);
