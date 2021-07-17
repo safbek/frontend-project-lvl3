@@ -38,6 +38,4 @@ const init = async () => {
   }
 };
 
-// init().catch(() => {});
-
 export default init;

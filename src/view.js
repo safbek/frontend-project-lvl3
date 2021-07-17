@@ -109,8 +109,8 @@ const getSubmitHandler = ((state) => (event) => {
               }
             });
         });
-        setTimeout(updatePosts, 20000);
-      }, 20000);
+        setTimeout(updatePosts, 5000);
+      }, 5000);
     });
 });
 

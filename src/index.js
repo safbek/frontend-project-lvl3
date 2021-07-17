@@ -1,5 +1,5 @@
-import init from './init';
+import app from './app';
 
-init();
+app();
 
-export default init;
+export default app;

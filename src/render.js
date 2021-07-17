@@ -96,10 +96,8 @@ const render = (path, value) => {
   }
 
   if (path === 'validationState.state' && value === 'processing') {
-    console.log(value);
     document.querySelector('.url').readOnly = true;
     document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
-    console.log(document.querySelector('.btn-add'));
   }
 
   if (path === 'validationState.state' && value === 'filling') {
