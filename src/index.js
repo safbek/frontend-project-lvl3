@@ -2,4 +2,4 @@ import app from './app';
 
 app();
 
-export default app;
+// export default app;
