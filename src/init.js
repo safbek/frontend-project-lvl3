@@ -18,7 +18,7 @@ const init = async () => {
 
   const state = {
     validationState: {
-      valid: true,
+      valid: null,
       state: 'filling',
     },
     updates: {

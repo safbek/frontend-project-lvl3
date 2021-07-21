@@ -89,28 +89,32 @@ const render = (path, value) => {
 
   // вынести стили в css.Создать классы danger, success
   if (path === 'validationState.valid') {
-    if (!value) {
+    console.log(path, value);
+    if (value) {
+      feedback.classList.add('text-success');
+      feedback.classList.remove('text-danger');
+    } else {
       feedback.classList.remove('text-success');
       feedback.classList.add('text-danger');
     }
   }
 
-  if (path === 'validationState.state' && value === 'processing') {
-    document.querySelector('.url').readOnly = true;
-    document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
-  }
-
-  if (path === 'validationState.state' && value === 'filling') {
-    document.querySelector('.url').readOnly = false;
-    document.querySelector('.btn-add').removeAttribute('disabled');
-  }
+  // if (path === 'validationState.state') {
+  //   if (value === 'filling') {
+  //     document.querySelector('.url').readOnly = false;
+  //     document.querySelector('.btn-add').removeAttribute('disabled');
+  //   } else {
+  //     document.querySelector('.url').readOnly = true;
+  //     document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
+  //   }
+  // }
 
   if (path === 'updates.feeds') {
     form.value = '';
     form.focus();
     form.classList.remove('is-invalid');
-    feedback.classList.remove('text-danger');
-    feedback.classList.add('text-success');
+    // feedback.classList.remove('text-danger');
+    // feedback.classList.add('text-success');
     // feedback.textContent = i18next.t('rssAddedSuccessfully');
     renderFeed(feeds, value);
   }

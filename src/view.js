@@ -63,8 +63,9 @@ const getSubmitHandler = ((state) => (event) => {
       stateProxy.updates.posts.push(...posts);
 
       handlerFullPost(stateProxy);
-      stateProxy.validationState.state = 'filling';
+      stateProxy.validationState.valid = true;
       feedback.textContent = i18next.t('rssAddedSuccessfully');
+      stateProxy.validationState.state = 'filling';
     })
     .catch((e) => {
       stateProxy.validationState.state = 'filling';
@@ -74,10 +75,8 @@ const getSubmitHandler = ((state) => (event) => {
       } else if (e.message === 'this must be a valid URL') {
         const form = document.querySelector('.form-control');
         form.classList.add('is-invalid');
-        // stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('url');
       } else {
-        // stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('rssAlreadyExists');
       }
     })
@@ -115,8 +114,6 @@ const getSubmitHandler = ((state) => (event) => {
         setTimeout(updatePosts, 5000);
       }, 5000);
     });
-  stateProxy.validationState.state = 'filling';
-  console.log(stateProxy.validationState.state);
 });
 
 export default getSubmitHandler;
