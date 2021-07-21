@@ -5,3 +5,11 @@
 .text-succes {
     color: #28a745;
 }
+
+.fw-bold {
+    font-weight: 700;
+}
+
+.fw-normal {
+    font-weight: 400;
+}

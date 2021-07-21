@@ -58,7 +58,8 @@ const renderPosts = (container, posts) => {
     a.setAttribute('target', 'blank');
     a.textContent = post.title;
     a.href = post.link;
-    a.classList.add('font-weight-bold');
+    a.classList.remove('fw-normal');
+    a.classList.add('fw-bold');
 
     const button = document.createElement('button');
     button.classList.add('btn', 'btn-post-preview', 'btn-outline-primary', 'btn-sm');
@@ -128,7 +129,8 @@ const render = (path, value) => {
       const post = el;
       const postId = Number(el.dataset.id);
       if (value.includes(postId)) {
-        post.classList.add('font-weight-normal');
+        // post.classList.remove('fw-bold');
+        post.classList.toogle('fw-normal');
         post.style.color = '#6c757d';
       }
     });
