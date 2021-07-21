@@ -66,8 +66,10 @@ const getSubmitHandler = ((state) => (event) => {
       handlerFullPost(stateProxy);
       stateProxy.validationState.valid = true;
       feedback.textContent = i18next.t('rssAddedSuccessfully');
+      stateProxy.validationState.state = 'filling';
     })
     .catch((e) => {
+      stateProxy.validationState.state = 'filling';
       stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
         feedback.textContent = i18next.t('networkError');
@@ -80,7 +82,7 @@ const getSubmitHandler = ((state) => (event) => {
       }
     })
     .finally(() => {
-      stateProxy.validationState.state = 'filling';
+      // stateProxy.validationState.state = 'filling';
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
