@@ -26,7 +26,7 @@ const init = async () => {
       posts: [],
     },
     uiState: {
-      openPosts: [],
+      openPosts: new Set(),
     },
   };
 

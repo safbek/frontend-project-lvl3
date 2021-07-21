@@ -6,7 +6,7 @@ const handlerFullPost = ((state) => {
     link.addEventListener('click', (el) => {
       const postId = Number(el.target.dataset.id);
       console.log(postId);
-      stateProxy.uiState.openPosts.push(postId);
+      stateProxy.uiState.openPosts.add(postId);
     });
   });
 
@@ -26,8 +26,7 @@ const handlerFullPost = ((state) => {
       // access to full article
       const fullArticleLink = document.querySelector('.full-article');
       fullArticleLink.setAttribute('href', openedPost.link);
-
-      stateProxy.uiState.openPosts.push(openedPost.id);
+      stateProxy.uiState.openPosts.add(openedPost.id);
     });
   });
 });

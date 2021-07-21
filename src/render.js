@@ -102,12 +102,14 @@ const render = (path, value) => {
       break;
     }
     case 'validationState.state': {
+      const href = document.querySelector('.url');
+      const addBtn = document.querySelector('.btn-add');
       if (value === 'filling') {
-        document.querySelector('.url').readOnly = false;
-        document.querySelector('.btn-add').removeAttribute('disabled');
+        href.readOnly = false;
+        addBtn.removeAttribute('disabled');
       } else {
-        document.querySelector('.url').readOnly = true;
-        document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
+        href.readOnly = true;
+        addBtn.setAttribute('disabled', 'disabled');
       }
       break;
     }
