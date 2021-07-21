@@ -89,7 +89,6 @@ const render = (path, value) => {
 
   // вынести стили в css.Создать классы danger, success
   if (path === 'validationState.valid') {
-    console.log(path, value);
     if (value) {
       feedback.classList.add('text-success');
       feedback.classList.remove('text-danger');
@@ -99,15 +98,15 @@ const render = (path, value) => {
     }
   }
 
-  // if (path === 'validationState.state') {
-  //   if (value === 'filling') {
-  //     document.querySelector('.url').readOnly = false;
-  //     document.querySelector('.btn-add').removeAttribute('disabled');
-  //   } else {
-  //     document.querySelector('.url').readOnly = true;
-  //     document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
-  //   }
-  // }
+  if (path === 'validationState.state') {
+    if (value === 'filling') {
+      document.querySelector('.url').readOnly = false;
+      document.querySelector('.btn-add').removeAttribute('disabled');
+    } else {
+      document.querySelector('.url').readOnly = true;
+      document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
+    }
+  }
 
   if (path === 'updates.feeds') {
     form.value = '';

@@ -32,6 +32,7 @@ const generateId = (state, parsedData, link) => {
 const getSubmitHandler = ((state) => (event) => {
   const stateProxy = state;
   event.preventDefault();
+  stateProxy.validationState.state = 'processing';
 
   const rssLink = document.querySelector('.input-value').value;
   const feedback = document.querySelector('.feedback');
@@ -47,12 +48,12 @@ const getSubmitHandler = ((state) => (event) => {
     .then(() => axios(`${proxy}=${rssLink}`))
     .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
     .then((data) => {
+      stateProxy.validationState.state = 'processing';
       if (data.getElementsByTagName('parsererror').length) {
         stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('parseError');
         return;
       }
-      stateProxy.validationState.state = 'processing';
       const parsedData = parse(data);
 
       const generatedFeed = generateId(originalState.updates, parsedData, rssLink);
@@ -65,10 +66,8 @@ const getSubmitHandler = ((state) => (event) => {
       handlerFullPost(stateProxy);
       stateProxy.validationState.valid = true;
       feedback.textContent = i18next.t('rssAddedSuccessfully');
-      stateProxy.validationState.state = 'filling';
     })
     .catch((e) => {
-      stateProxy.validationState.state = 'filling';
       stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
         feedback.textContent = i18next.t('networkError');
@@ -81,7 +80,7 @@ const getSubmitHandler = ((state) => (event) => {
       }
     })
     .finally(() => {
-      // stateProxy.validationState.state = 'filling';
+      stateProxy.validationState.state = 'filling';
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
