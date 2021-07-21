@@ -63,8 +63,11 @@ const getSubmitHandler = ((state) => (event) => {
       stateProxy.updates.posts.push(...posts);
 
       handlerFullPost(stateProxy);
+      stateProxy.validationState.state = 'filling';
+      feedback.textContent = i18next.t('rssAddedSuccessfully');
     })
     .catch((e) => {
+      stateProxy.validationState.state = 'filling';
       stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
         feedback.textContent = i18next.t('networkError');

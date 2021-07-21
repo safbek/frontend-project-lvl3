@@ -111,7 +111,7 @@ const render = (path, value) => {
     form.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
-    feedback.textContent = i18next.t('rssAddedSuccessfully');
+    // feedback.textContent = i18next.t('rssAddedSuccessfully');
     renderFeed(feeds, value);
   }
 
