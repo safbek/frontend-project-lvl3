@@ -65,21 +65,21 @@ const getSubmitHandler = ((state) => (event) => {
       handlerFullPost(stateProxy);
     })
     .catch((e) => {
+      stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
-        stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('networkError');
       } else if (e.message === 'this must be a valid URL') {
         const form = document.querySelector('.form-control');
         form.classList.add('is-invalid');
-        stateProxy.validationState.valid = false;
+        // stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('url');
       } else {
-        stateProxy.validationState.valid = false;
+        // stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('rssAlreadyExists');
       }
     })
     .finally(() => {
-      stateProxy.validationState.state = 'filling';
+      // stateProxy.validationState.state = 'filling';
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
@@ -112,6 +112,8 @@ const getSubmitHandler = ((state) => (event) => {
         setTimeout(updatePosts, 5000);
       }, 5000);
     });
+  stateProxy.validationState.state = 'filling';
+  console.log(stateProxy.validationState.state);
 });
 
 export default getSubmitHandler;
