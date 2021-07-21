@@ -50,7 +50,6 @@ const renderPosts = (container, posts) => {
   const reversedPosts = posts.reverse().flat();
 
   reversedPosts.forEach((post) => {
-    // console.log(post);
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
@@ -90,10 +89,12 @@ const render = (path, value) => {
 
   // вынести стили в css.Создать классы danger, success
   if (path === 'validationState.valid') {
-    // console.log(path, value);
     if (value) {
       feedback.classList.add('text-success');
       feedback.classList.remove('text-danger');
+      form.value = '';
+      form.focus();
+      form.classList.remove('is-invalid');
     } else {
       feedback.classList.remove('text-success');
       feedback.classList.add('text-danger');
@@ -111,12 +112,6 @@ const render = (path, value) => {
   }
 
   if (path === 'updates.feeds') {
-    form.value = '';
-    form.focus();
-    form.classList.remove('is-invalid');
-    // feedback.classList.remove('text-danger');
-    // feedback.classList.add('text-success');
-    // feedback.textContent = i18next.t('rssAddedSuccessfully');
     renderFeed(feeds, value);
   }
 

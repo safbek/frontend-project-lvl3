@@ -16,7 +16,6 @@ const handlerFullPost = ((state) => {
       const reviewPost = Number(e.target.dataset.id);
       console.log(reviewPost);
       const openedPost = stateProxy.updates.posts.flat().filter((post) => post.id === reviewPost);
-      // console.log(openedPost);
 
       // to pass data into modal
       const modalTitle = document.querySelector('.modal-title');
