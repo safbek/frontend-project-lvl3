@@ -65,24 +65,28 @@ const getSubmitHandler = ((state) => (event) => {
 
       handlerFullPost(stateProxy);
       stateProxy.validationState.valid = true;
+      // stateProxy.validationState.state = 'filling';
       feedback.textContent = i18next.t('rssAddedSuccessfully');
       stateProxy.validationState.state = 'filling';
     })
     .catch((e) => {
-      stateProxy.validationState.state = 'filling';
+      // stateProxy.validationState.state = 'filling';
       stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
         feedback.textContent = i18next.t('networkError');
+        stateProxy.validationState.state = 'filling';
       } else if (e.message === 'this must be a valid URL') {
         const form = document.querySelector('.form-control');
         form.classList.add('is-invalid');
+        stateProxy.validationState.state = 'filling';
         feedback.textContent = i18next.t('url');
       } else {
         feedback.textContent = i18next.t('rssAlreadyExists');
+        stateProxy.validationState.state = 'filling';
       }
     })
     .finally(() => {
-      // stateProxy.validationState.state = 'filling';
+      stateProxy.validationState.state = 'filling';
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
