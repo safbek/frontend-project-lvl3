@@ -47,9 +47,10 @@ const renderPosts = (container, posts) => {
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
 
-  const reversedPosts = posts.reverse();
+  const reversedPosts = posts.reverse().flat();
 
   reversedPosts.forEach((post) => {
+    console.log(post);
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 

@@ -30,6 +30,8 @@ const init = async () => {
     },
   };
 
+  console.log(state)
+
   const watchedState = onChange(state, render);
 
   const form = document.querySelector('.rss-form');

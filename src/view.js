@@ -61,7 +61,7 @@ const getSubmitHandler = ((state) => (event) => {
       const { posts } = generatedFeed;
 
       stateProxy.updates.feeds.push(feed);
-      stateProxy.updates.posts.push(...posts);
+      stateProxy.updates.posts.push(posts);
 
       handlerFullPost(stateProxy);
       stateProxy.validationState.valid = true;
