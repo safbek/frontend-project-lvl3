@@ -58,7 +58,6 @@ const renderPosts = (container, posts) => {
     a.setAttribute('target', 'blank');
     a.textContent = post.title;
     a.href = post.link;
-    a.classList.remove('fw-normal');
     a.classList.add('fw-bold');
 
     const button = document.createElement('button');
@@ -90,6 +89,7 @@ const render = (path, value) => {
 
   // вынести стили в css.Создать классы danger, success
   if (path === 'validationState.valid') {
+    // console.log(path, value);
     if (value) {
       feedback.classList.add('text-success');
       feedback.classList.remove('text-danger');
@@ -129,8 +129,8 @@ const render = (path, value) => {
       const post = el;
       const postId = Number(el.dataset.id);
       if (value.includes(postId)) {
-        // post.classList.remove('fw-bold');
-        post.classList.toogle('fw-normal');
+        post.classList.remove('fw-bold');
+        post.classList.add('fw-normal');
         post.style.color = '#6c757d';
       }
     });
