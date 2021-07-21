@@ -50,7 +50,7 @@ const renderPosts = (container, posts) => {
   const reversedPosts = posts.reverse().flat();
 
   reversedPosts.forEach((post) => {
-    console.log(post);
+    // console.log(post);
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
@@ -125,6 +125,7 @@ const render = (path, value) => {
   }
 
   if (path === 'uiState.openPosts') {
+    console.log(path, value);
     const links = document.querySelectorAll('a');
     links.forEach((el) => {
       const post = el;

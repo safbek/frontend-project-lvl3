@@ -5,6 +5,7 @@ const handlerFullPost = ((state) => {
   href.forEach((link) => {
     link.addEventListener('click', (el) => {
       const postId = Number(el.target.dataset.id);
+      console.log(postId);
       stateProxy.uiState.openPosts.push(postId);
     });
   });
@@ -13,7 +14,9 @@ const handlerFullPost = ((state) => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       const reviewPost = Number(e.target.dataset.id);
-      const openedPost = stateProxy.updates.posts.filter((post) => post.id === reviewPost);
+      console.log(reviewPost);
+      const openedPost = stateProxy.updates.posts.flat().filter((post) => post.id === reviewPost);
+      // console.log(openedPost);
 
       // to pass data into modal
       const modalTitle = document.querySelector('.modal-title');
