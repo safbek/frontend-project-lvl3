@@ -87,50 +87,54 @@ const render = (path, value) => {
   const posts = document.querySelector('.posts');
   const form = document.querySelector('.form-control');
 
-  // вынести стили в css.Создать классы danger, success
-  if (path === 'validationState.valid') {
-    if (value) {
-      feedback.classList.add('text-success');
-      feedback.classList.remove('text-danger');
-      form.value = '';
-      form.focus();
-      form.classList.remove('is-invalid');
-    } else {
-      feedback.classList.remove('text-success');
-      feedback.classList.add('text-danger');
-    }
-  }
-
-  if (path === 'validationState.state') {
-    if (value === 'filling') {
-      document.querySelector('.url').readOnly = false;
-      document.querySelector('.btn-add').removeAttribute('disabled');
-    } else {
-      document.querySelector('.url').readOnly = true;
-      document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
-    }
-  }
-
-  if (path === 'updates.feeds') {
-    renderFeed(feeds, value);
-  }
-
-  if (path === 'updates.posts') {
-    renderPosts(posts, value);
-  }
-
-  if (path === 'uiState.openPosts') {
-    console.log(path, value);
-    const links = document.querySelectorAll('a');
-    links.forEach((el) => {
-      const post = el;
-      const postId = Number(el.dataset.id);
-      if (value.includes(postId)) {
-        post.classList.remove('fw-bold');
-        post.classList.add('fw-normal');
-        post.style.color = '#6c757d';
+  switch (path) {
+    case 'validationState.valid': {
+      if (value) {
+        feedback.classList.add('text-success');
+        feedback.classList.remove('text-danger');
+        form.value = '';
+        form.focus();
+        form.classList.remove('is-invalid');
+      } else {
+        feedback.classList.remove('text-success');
+        feedback.classList.add('text-danger');
       }
-    });
+      break;
+    }
+    case 'validationState.state': {
+      if (value === 'filling') {
+        document.querySelector('.url').readOnly = false;
+        document.querySelector('.btn-add').removeAttribute('disabled');
+      } else {
+        document.querySelector('.url').readOnly = true;
+        document.querySelector('.btn-add').setAttribute('disabled', 'disabled');
+      }
+      break;
+    }
+    case 'uiState.openPosts': {
+      const links = document.querySelectorAll('a');
+      links.forEach((el) => {
+        const post = el;
+        const postId = Number(el.dataset.id);
+        if (value.includes(postId)) {
+          post.classList.remove('fw-bold');
+          post.classList.add('fw-normal');
+          post.style.color = '#6c757d';
+        }
+      });
+      break;
+    }
+    case 'updates.feeds': {
+      renderFeed(feeds, value);
+      break;
+    }
+    case 'updates.posts': {
+      renderPosts(posts, value);
+      break;
+    }
+    default: {
+      break;
+    }
   }
 };
 
