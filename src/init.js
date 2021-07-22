@@ -8,6 +8,8 @@ import ru from './dictionaries';
 import getSubmitHandler from './view';
 import render from './render';
 
+import handlerFullPost from './handlerFullPost';
+
 const onChange = require('on-change');
 
 const init = async () => {
@@ -30,12 +32,15 @@ const init = async () => {
     },
   };
 
+  console.log(state);
+
   const watchedState = onChange(state, render);
 
   const form = document.querySelector('.rss-form');
   if (form) {
     form.addEventListener('submit', getSubmitHandler(watchedState));
   }
+  handlerFullPost(watchedState);
 };
 
 export default init;

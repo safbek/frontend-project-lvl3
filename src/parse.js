@@ -2,10 +2,8 @@ const parse = (response) => {
   const parseXml = new DOMParser();
   const xml = parseXml.parseFromString(response, 'text/xml');
   if (xml.getElementsByTagName('parsererror').length) {
-    console.log('not ok');
     return false;
   }
-  console.log('ok');
   const channel = xml.querySelector('channel');
   const title = channel.querySelector('title').textContent;
   const description = channel.querySelector('description').textContent;

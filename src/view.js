@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import onChange from 'on-change';
 import _ from 'lodash';
 import parse from './parse';
-import handlerFullPost from './handlerFullPost';
+// import handlerFullPost from './handlerFullPost';
 
 const axios = require('axios');
 
@@ -29,17 +29,17 @@ const axios = require('axios');
 //   return { feed, posts };
 // };
 
-const generateId = (state, parsedData, link) => {
+const generateId = (parsedData, link) => {
   const feed = {
     id: _.uniqueId(),
     title: parsedData.title,
     description: parsedData.description,
     link,
   };
-  const posts = parsedData.items.reduce((acc, item, index) => {
+  const posts = parsedData.items.reduce((acc, item) => {
     const post = {
-      id: index,
-      feedId: _.uniqueId(),
+      id: _.uniqueId(),
+      // feedId: _.uniqueId(),
       title: item.titleItem,
       description: item.postDescription,
       link: item.linkItem,
@@ -82,14 +82,14 @@ const getSubmitHandler = ((state) => (event) => {
     .then((data) => {
       stateProxy.validationState.state = 'processing';
 
-      const generatedFeed = generateId(originalState.updates, data, rssLink);
+      const generatedFeed = generateId(data, rssLink);
       const { feed } = generatedFeed;
       const { posts } = generatedFeed;
 
       stateProxy.updates.feeds.push(feed);
       stateProxy.updates.posts.push(posts);
 
-      handlerFullPost(stateProxy);
+      // handlerFullPost(stateProxy);
       stateProxy.validationState.valid = true;
       feedback.textContent = i18next.t('rssAddedSuccessfully');
       stateProxy.validationState.state = 'filling';

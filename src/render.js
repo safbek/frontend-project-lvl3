@@ -117,7 +117,7 @@ const render = (path, value) => {
       const links = document.querySelectorAll('a');
       links.forEach((el) => {
         const post = el;
-        const postId = Number(el.dataset.id);
+        const postId = el.dataset.id;
         if (value.has(postId)) {
           post.classList.remove('fw-bold');
           post.classList.add('fw-normal');
