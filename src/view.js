@@ -34,29 +34,34 @@ const getSubmitHandler = ((state) => (event) => {
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
 
-  const rssLink = document.querySelector('.input-value').value;
   const feedback = document.querySelector('.feedback');
 
   const links = stateProxy.updates.feeds.map((item) => item.link);
 
   const validUrlSchema = yup.string().url().notOneOf(links);
-  const proxy = 'https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url';
-  const parseXml = new DOMParser();
+  // const parseXml = new DOMParser();
   const originalState = onChange.target(state);
 
+  // const url = new URL(rssLink, proxy);
+  // console.log(`${proxy}=${rssLink}`);
+  // .then(() => axios(url))
+  // console.log(url);
+  const rssLink = document.querySelector('.input-value').value;
+  const proxy = 'https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url';
   validUrlSchema.validate(rssLink)
     .then(() => axios(`${proxy}=${rssLink}`))
-    .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
+    // .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
+    .then((response) => parse(response))
     .then((data) => {
       stateProxy.validationState.state = 'processing';
-      if (data.getElementsByTagName('parsererror').length) {
-        stateProxy.validationState.valid = false;
-        feedback.textContent = i18next.t('parseError');
-        return;
-      }
-      const parsedData = parse(data);
+      // if (data.getElementsByTagName('parsererror').length) {
+      //   stateProxy.validationState.valid = false;
+      //   feedback.textContent = i18next.t('parseError');
+      //   return;
+      // }
+      // const parsedData = parse(data);
 
-      const generatedFeed = generateId(originalState.updates, parsedData, rssLink);
+      const generatedFeed = generateId(originalState.updates, data, rssLink);
       const { feed } = generatedFeed;
       const { posts } = generatedFeed;
 
@@ -78,6 +83,7 @@ const getSubmitHandler = ((state) => (event) => {
         feedback.textContent = i18next.t('url');
       } else {
         feedback.textContent = i18next.t('rssAlreadyExists');
+        console.log(e.message);
       }
     })
     .finally(() => {

@@ -1,4 +1,6 @@
-const parse = (xml) => {
+const parse = (response) => {
+  const parseXml = new DOMParser();
+  const xml = parseXml.parseFromString(response.data.contents, 'text/xml');
   const channel = xml.querySelector('channel');
   const title = channel.querySelector('title').textContent;
   const description = channel.querySelector('description').textContent;
