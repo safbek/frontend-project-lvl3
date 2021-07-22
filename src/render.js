@@ -118,7 +118,7 @@ const render = (path, value) => {
       links.forEach((el) => {
         const post = el;
         const postId = Number(el.dataset.id);
-        if (value.includes(postId)) {
+        if (value.has(postId)) {
           post.classList.remove('fw-bold');
           post.classList.add('fw-normal');
           post.style.color = '#6c757d';
