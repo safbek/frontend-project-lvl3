@@ -10,24 +10,44 @@ const handlerFullPost = ((state) => {
     });
   });
 
-  Array.from(document.getElementsByClassName('btn-post-preview')).forEach((button) => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      const reviewPost = Number(e.target.dataset.id);
-      console.log(reviewPost);
-      const openedPost = stateProxy.updates.posts.flat().find((post) => post.id === reviewPost);
+  // Array.from(document.getElementsByClassName('btn-post-preview')).forEach((button) => {
+  //   button.addEventListener('click', (e) => {
+  //     e.preventDefault();
+  //     const reviewPost = Number(e.target.dataset.id);
+  //     console.log(reviewPost);
+  //     const openedPost = stateProxy.updates.posts.flat().find((post) => post.id === reviewPost);
 
-      // to pass data into modal
-      const modalTitle = document.querySelector('.modal-title');
-      const modalBody = document.querySelector('.modal-body');
-      modalTitle.textContent = openedPost.title;
-      modalBody.textContent = openedPost.description;
+  //     // to pass data into modal
+  //     const modalTitle = document.querySelector('.modal-title');
+  //     const modalBody = document.querySelector('.modal-body');
+  //     modalTitle.textContent = openedPost.title;
+  //     modalBody.textContent = openedPost.description;
 
-      // access to full article
-      const fullArticleLink = document.querySelector('.full-article');
-      fullArticleLink.setAttribute('href', openedPost.link);
-      stateProxy.uiState.openPosts.add(openedPost.id);
-    });
+  //     // access to full article
+  //     const fullArticleLink = document.querySelector('.full-article');
+  //     fullArticleLink.setAttribute('href', openedPost.link);
+  //     stateProxy.uiState.openPosts.add(openedPost.id);
+  //   });
+  // });
+
+  const posts = document.querySelector('.posts');
+
+  posts.addEventListener('click', (e) => {
+    e.preventDefault();
+    const reviewPost = Number(e.target.dataset.id);
+    console.log(reviewPost);
+    const openedPost = stateProxy.updates.posts.flat().find((post) => post.id === reviewPost);
+
+    // to pass data into modal
+    const modalTitle = document.querySelector('.modal-title');
+    const modalBody = document.querySelector('.modal-body');
+    modalTitle.textContent = openedPost.title;
+    modalBody.textContent = openedPost.description;
+
+    // access to full article
+    const fullArticleLink = document.querySelector('.full-article');
+    fullArticleLink.setAttribute('href', openedPost.link);
+    stateProxy.uiState.openPosts.add(openedPost.id);
   });
 });
 
