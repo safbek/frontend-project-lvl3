@@ -3,31 +3,8 @@ import i18next from 'i18next';
 import onChange from 'on-change';
 import _ from 'lodash';
 import parse from './parse';
-// import handlerFullPost from './handlerFullPost';
 
 const axios = require('axios');
-
-// const generateId = (state, parsedData, link) => {
-//   const feed = {
-//     id: state.feeds.length,
-//     title: parsedData.title,
-//     description: parsedData.description,
-//     link,
-//   };
-//   const posts = parsedData.items.reduce((acc, item, index) => {
-//     const post = {
-//       id: state.posts.length + index,
-//       feedId: state.feeds.length,
-//       title: item.titleItem,
-//       description: item.postDescription,
-//       link: item.linkItem,
-//     };
-//     acc.push(post);
-//     return acc;
-//   }, []);
-
-//   return { feed, posts };
-// };
 
 const generateId = (parsedData, link) => {
   const feed = {
@@ -39,7 +16,6 @@ const generateId = (parsedData, link) => {
   const posts = parsedData.items.reduce((acc, item) => {
     const post = {
       id: _.uniqueId(),
-      // feedId: _.uniqueId(),
       title: item.titleItem,
       description: item.postDescription,
       link: item.linkItem,
@@ -64,14 +40,15 @@ const getSubmitHandler = ((state) => (event) => {
   const validUrlSchema = yup.string().url().notOneOf(links);
   const originalState = onChange.target(state);
 
-  // const url = new URL(rssLink, proxy);
-  // console.log(`${proxy}=${rssLink}`);
-  // .then(() => axios(url))
-  // console.log(url);
   const rssLink = document.querySelector('.input-value').value;
-  const proxy = 'https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url';
+  const proxy = new URL('https://hexlet-allorigins.herokuapp.com/get');
+  proxy.searchParams.set('disableCache', 'true');
+  proxy.searchParams.set('url', rssLink);
+
+  const { href } = proxy;
+
   validUrlSchema.validate(rssLink)
-    .then(() => axios(`${proxy}=${rssLink}`))
+    .then(() => axios(href))
     .then((response) => {
       if (!parse(response.data.contents)) {
         stateProxy.validationState.valid = false;
@@ -89,7 +66,6 @@ const getSubmitHandler = ((state) => (event) => {
       stateProxy.updates.feeds.push(feed);
       stateProxy.updates.posts.push(posts);
 
-      // handlerFullPost(stateProxy);
       stateProxy.validationState.valid = true;
       feedback.textContent = i18next.t('rssAddedSuccessfully');
       stateProxy.validationState.state = 'filling';
