@@ -51,7 +51,14 @@ const getSubmitHandler = ((state) => (event) => {
   validUrlSchema.validate(rssLink)
     .then(() => axios(`${proxy}=${rssLink}`))
     // .then((response) => parseXml.parseFromString(response.data.contents, 'text/xml'))
-    .then((response) => parse(response))
+    .then((response) => {
+      if (!parse(response.data.contents)) {
+        console.log('haa');
+        stateProxy.validationState.valid = false;
+        feedback.textContent = i18next.t('parseError');
+      }
+      return parse(response.data.contents);
+    })
     .then((data) => {
       stateProxy.validationState.state = 'processing';
       // if (data.getElementsByTagName('parsererror').length) {
@@ -91,9 +98,9 @@ const getSubmitHandler = ((state) => (event) => {
       setTimeout(function updatePosts() {
         originalState.updates.feeds.forEach((feed) => {
           axios(feed.link)
-            .then((response) => parseXml.parseFromString(response.data, 'text/xml'))
-            .then((data) => {
-              const parsedData = parse(data);
+            // .then((response) => parseXml.parseFromString(response.data, 'text/xml'))
+            .then((response) => {
+              const parsedData = parse(response.data);
 
               const newPostLinks = parsedData.items.map((item) => item.linkItem);
               const currentPostLinks = originalState.updates.posts.map((item) => item.link);
