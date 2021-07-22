@@ -1,22 +1,45 @@
 import * as yup from 'yup';
 import i18next from 'i18next';
 import onChange from 'on-change';
+import _ from 'lodash';
 import parse from './parse';
 import handlerFullPost from './handlerFullPost';
 
 const axios = require('axios');
 
+// const generateId = (state, parsedData, link) => {
+//   const feed = {
+//     id: state.feeds.length,
+//     title: parsedData.title,
+//     description: parsedData.description,
+//     link,
+//   };
+//   const posts = parsedData.items.reduce((acc, item, index) => {
+//     const post = {
+//       id: state.posts.length + index,
+//       feedId: state.feeds.length,
+//       title: item.titleItem,
+//       description: item.postDescription,
+//       link: item.linkItem,
+//     };
+//     acc.push(post);
+//     return acc;
+//   }, []);
+
+//   return { feed, posts };
+// };
+
 const generateId = (state, parsedData, link) => {
   const feed = {
-    id: state.feeds.length,
+    id: _.uniqueId(),
     title: parsedData.title,
     description: parsedData.description,
     link,
   };
   const posts = parsedData.items.reduce((acc, item, index) => {
     const post = {
-      id: state.posts.length + index,
-      feedId: state.feeds.length,
+      id: index,
+      feedId: _.uniqueId(),
       title: item.titleItem,
       description: item.postDescription,
       link: item.linkItem,
@@ -51,7 +74,6 @@ const getSubmitHandler = ((state) => (event) => {
     .then(() => axios(`${proxy}=${rssLink}`))
     .then((response) => {
       if (!parse(response.data.contents)) {
-        console.log('haa');
         stateProxy.validationState.valid = false;
         feedback.textContent = i18next.t('parseError');
       }
