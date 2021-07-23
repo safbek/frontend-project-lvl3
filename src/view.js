@@ -28,7 +28,7 @@ const generateId = (parsedData, link) => {
 };
 
 // HANDELER ****************************************************
-const getSubmitHandler = ((state) => (event) => {
+const fetchFeeds = ((state) => (event) => {
   const stateProxy = state;
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
@@ -117,4 +117,4 @@ const getSubmitHandler = ((state) => (event) => {
     });
 });
 
-export default getSubmitHandler;
+export default fetchFeeds;

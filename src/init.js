@@ -1,14 +1,12 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
-import './css/custom.css';
 
 import i18next from 'i18next';
 import ru from './dictionaries';
 
-import getSubmitHandler from './view';
+import fetchFeeds from './view';
 import render from './render';
 
-import handlerFullPost from './handlerFullPost';
+import handleFullPost from './handleFullPost';
 
 const onChange = require('on-change');
 
@@ -29,6 +27,7 @@ const init = async () => {
     },
     uiState: {
       openPosts: new Set(),
+      modalState: new Set(),
     },
   };
 
@@ -38,9 +37,9 @@ const init = async () => {
 
   const form = document.querySelector('.rss-form');
   if (form) {
-    form.addEventListener('submit', getSubmitHandler(watchedState));
+    form.addEventListener('submit', fetchFeeds(watchedState));
   }
-  handlerFullPost(watchedState);
+  handleFullPost(watchedState);
 };
 
 export default init;

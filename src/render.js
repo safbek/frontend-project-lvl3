@@ -135,7 +135,7 @@ const render = (path, value) => {
       break;
     }
     default: {
-      break;
+      throw new Error(`Unknown path: '${path}'!`);
     }
   }
 };
