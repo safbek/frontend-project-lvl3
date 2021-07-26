@@ -7,6 +7,7 @@ import fetchFeeds from './view';
 import render from './render';
 
 import handleFullPost from './handleFullPost';
+import getModal from './getModal';
 
 const onChange = require('on-change');
 
@@ -27,7 +28,6 @@ const init = async () => {
     },
     uiState: {
       openPosts: new Set(),
-      modalState: new Set(),
     },
   };
 
@@ -40,6 +40,7 @@ const init = async () => {
     form.addEventListener('submit', fetchFeeds(watchedState));
   }
   handleFullPost(watchedState);
+  getModal(watchedState);
 };
 
 export default init;
