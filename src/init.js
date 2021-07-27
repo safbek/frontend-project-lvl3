@@ -37,7 +37,7 @@ const init = async () => {
 
   const form = document.querySelector('.rss-form');
   if (form) {
-    form.addEventListener('submit', fetchFeeds(watchedState));
+    form.addEventListener('submit', fetchFeeds(watchedState, i18Instance));
   }
   handleFullPost(watchedState);
   getModal(watchedState);
