@@ -27,7 +27,7 @@ const generateId = (parsedData, link) => {
 };
 
 // HANDELER ****************************************************
-const fetchFeeds = ((state, i18Instance) => (event) => {
+const fetchFeeds = ((state) => (event) => {
   const stateProxy = state;
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
