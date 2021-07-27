@@ -1,14 +1,13 @@
-// import newInstance from 'i18next';
 import onChange from 'on-change';
 
 // RENDER **************************************************
-const renderFeed = (container, feeds, ins) => {
+const renderFeed = (container, feeds, i18Instance) => {
   const feedsContainer = container;
   const div = document.createElement('div');
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = ins.t('feeds');
+  h2.textContent = i18Instance.t('feeds');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
@@ -37,13 +36,13 @@ const renderFeed = (container, feeds, ins) => {
   feedsContainer.appendChild(fragment);
 };
 
-const renderPosts = (container, posts, ins) => {
+const renderPosts = (container, posts, i18Instance) => {
   const postsContainer = container;
   const div = document.createElement('div');
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = ins.t('posts');
+  h2.textContent = i18Instance.t('posts');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
@@ -67,7 +66,7 @@ const renderPosts = (container, posts, ins) => {
     button.setAttribute('type', 'button');
     button.setAttribute('data-toggle', 'modal');
     button.setAttribute('data-target', '#myModal');
-    button.textContent = ins.t('view');
+    button.textContent = i18Instance.t('view');
 
     li.appendChild(a);
     li.appendChild(button);
@@ -82,7 +81,7 @@ const renderPosts = (container, posts, ins) => {
   postsContainer.appendChild(fragment);
 };
 
-const watcher = (newInstance, state) => onChange(state, (path, value) => {
+const watcher = (i18Instance, state) => onChange(state, (path, value) => {
   const feedback = document.querySelector('.feedback');
   const feeds = document.querySelector('.feeds');
   const posts = document.querySelector('.posts');
@@ -128,11 +127,11 @@ const watcher = (newInstance, state) => onChange(state, (path, value) => {
       break;
     }
     case 'updates.feeds': {
-      renderFeed(feeds, value, newInstance);
+      renderFeed(feeds, value, i18Instance);
       break;
     }
     case 'updates.posts': {
-      renderPosts(posts, value, newInstance);
+      renderPosts(posts, value, i18Instance);
       break;
     }
     default: {
@@ -141,7 +140,4 @@ const watcher = (newInstance, state) => onChange(state, (path, value) => {
   }
 });
 
-// const watcher = (newInstance, state) => onChange(state, render);
-
-// export default render;
 export default watcher;
