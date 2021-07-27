@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import i18next from 'i18next';
+// import newInstance from 'i18next';
 import onChange from 'on-change';
 import _ from 'lodash';
 import parse from './parse';
@@ -28,7 +28,7 @@ const generateId = (parsedData, link) => {
 };
 
 // HANDELER ****************************************************
-const fetchFeeds = ((state) => (event) => {
+const fetchFeeds = ((state, newInstance) => (event) => {
   const stateProxy = state;
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
@@ -52,7 +52,7 @@ const fetchFeeds = ((state) => (event) => {
     .then((response) => {
       if (!parse(response.data.contents)) {
         stateProxy.validationState.valid = false;
-        feedback.textContent = i18next.t('parseError');
+        feedback.textContent = newInstance.t('parseError');
       }
       return parse(response.data.contents);
     })
@@ -67,19 +67,19 @@ const fetchFeeds = ((state) => (event) => {
       stateProxy.updates.posts.push(posts);
 
       stateProxy.validationState.valid = true;
-      feedback.textContent = i18next.t('rssAddedSuccessfully');
+      feedback.textContent = newInstance.t('rssAddedSuccessfully');
       stateProxy.validationState.state = 'filling';
     })
     .catch((e) => {
       stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
-        feedback.textContent = i18next.t('networkError');
+        feedback.textContent = newInstance.t('networkError');
       } else if (e.message === 'this must be a valid URL') {
         const form = document.querySelector('.form-control');
         form.classList.add('is-invalid');
-        feedback.textContent = i18next.t('url');
+        feedback.textContent = newInstance.t('url');
       } else {
-        feedback.textContent = i18next.t('rssAlreadyExists');
+        feedback.textContent = newInstance.t('rssAlreadyExists');
       }
     })
     .finally(() => {

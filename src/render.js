@@ -1,13 +1,14 @@
-import i18next from 'i18next';
+// import newInstance from 'i18next';
+import onChange from 'on-change';
 
 // RENDER **************************************************
-const renderFeed = (container, feeds) => {
+const renderFeed = (container, feeds, ins) => {
   const feedsContainer = container;
   const div = document.createElement('div');
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = i18next.t('feeds');
+  h2.textContent = ins.t('feeds');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
@@ -36,13 +37,13 @@ const renderFeed = (container, feeds) => {
   feedsContainer.appendChild(fragment);
 };
 
-const renderPosts = (container, posts) => {
+const renderPosts = (container, posts, ins) => {
   const postsContainer = container;
   const div = document.createElement('div');
   div.classList.add('col-md-10', 'col-lg-8', 'mx-auto', 'feeds');
 
   const h2 = document.createElement('h2');
-  h2.textContent = i18next.t('posts');
+  h2.textContent = ins.t('posts');
 
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'mb-5');
@@ -66,7 +67,7 @@ const renderPosts = (container, posts) => {
     button.setAttribute('type', 'button');
     button.setAttribute('data-toggle', 'modal');
     button.setAttribute('data-target', '#myModal');
-    button.textContent = i18next.t('view');
+    button.textContent = ins.t('view');
 
     li.appendChild(a);
     li.appendChild(button);
@@ -81,7 +82,7 @@ const renderPosts = (container, posts) => {
   postsContainer.appendChild(fragment);
 };
 
-const render = (path, value) => {
+const watcher = (newInstance, state) => onChange(state, (path, value) => {
   const feedback = document.querySelector('.feedback');
   const feeds = document.querySelector('.feeds');
   const posts = document.querySelector('.posts');
@@ -127,17 +128,20 @@ const render = (path, value) => {
       break;
     }
     case 'updates.feeds': {
-      renderFeed(feeds, value);
+      renderFeed(feeds, value, newInstance);
       break;
     }
     case 'updates.posts': {
-      renderPosts(posts, value);
+      renderPosts(posts, value, newInstance);
       break;
     }
     default: {
       break;
     }
   }
-};
+});
 
-export default render;
+// const watcher = (newInstance, state) => onChange(state, render);
+
+// export default render;
+export default watcher;
