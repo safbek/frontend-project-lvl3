@@ -13,6 +13,10 @@ const getModal = ((state) => {
       const modalBody = document.querySelector('.modal-body');
       modalTitle.textContent = openedPost.title;
       modalBody.textContent = openedPost.description;
+
+      // // access to full article
+      const fullArticleLink = document.querySelector('.full-article');
+      fullArticleLink.setAttribute('href', openedPost.link);
     }
   });
 });
