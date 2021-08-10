@@ -10,7 +10,7 @@ import getModal from './getModal';
 
 const init = async () => {
   const i18Instance = i18next.createInstance();
-  i18Instance.init({
+  await i18Instance.init({
     lng: 'ru',
     resources: { ru },
     debug: true,
@@ -32,15 +32,17 @@ const init = async () => {
       openPosts: new Set(),
     },
   };
-  // const watchedState = onChange(state, render);
-  const watchedState = watcher(i18Instance, state);
-
   const form = document.querySelector('.rss-form');
+  const feeds = document.querySelector('.feeds');
+  const posts = document.querySelector('.posts');
+  // const watchedState = onChange(state, render);
+  const watchedState = watcher(i18Instance, state, feeds, posts);
+
   if (form) {
     form.addEventListener('submit', fetchFeeds(watchedState, i18Instance));
   }
-  handleFullPost(watchedState);
-  getModal(watchedState);
+  handleFullPost(watchedState, posts);
+  getModal(watchedState, posts);
 };
 
 export default init;

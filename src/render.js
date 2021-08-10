@@ -81,10 +81,10 @@ const renderPosts = (container, posts, i18Instance) => {
   postsContainer.appendChild(fragment);
 };
 
-const watcher = (i18Instance, state) => onChange(state, (path, value) => {
+const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, value) => {
   const feedback = document.querySelector('.feedback');
-  const feeds = document.querySelector('.feeds');
-  const posts = document.querySelector('.posts');
+  // const feeds = document.querySelector('.feeds');
+  // const posts = document.querySelector('.posts');
   const form = document.querySelector('.form-control');
 
   switch (path) {

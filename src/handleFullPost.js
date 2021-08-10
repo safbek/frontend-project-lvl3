@@ -1,7 +1,7 @@
-const handleFullPost = ((state) => {
+const handleFullPost = ((state, posts) => {
   const stateProxy = state;
 
-  const posts = document.querySelector('.posts');
+  // const posts = document.querySelector('.posts');
 
   posts.addEventListener('click', (e) => {
     const postId = e.target.dataset.id;
