@@ -8,20 +8,19 @@ const axios = require('axios');
 const generateId = (parsedData, link) => {
   const feed = {
     id: _.uniqueId(),
-    titel: parsedData.postTitle,
-    description: parsedData.postDescription,
+    title: parsedData.feedTitle,
+    description: parsedData.feedDescription,
     link,
   };
-  const posts = parsedData.items.reduce((acc, item) => {
+  const posts = parsedData.posts.reduce((acc, item) => {
     // console.log(item);
     const post = {
       id: _.uniqueId(),
-      // ...item,
       title: item.postTitle,
       description: item.postDescription,
       link: item.postLink,
     };
-    console.log(post);
+    // console.log(post);
     acc.push(post);
     return acc;
   }, []);
@@ -92,11 +91,11 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
             .then((response) => {
               const parsedData = parse(response.data);
 
-              const newPostLinks = parsedData.items.map((item) => item.linkItem);
+              const newPostLinks = parsedData.posts.map((item) => item.linkItem);
               const currentPostLinks = originalState.updates.posts.map((item) => item.link);
               const filtered = newPostLinks.filter((link) => !currentPostLinks.includes(link));
 
-              const newPosts = parsedData.items.filter((item) => filtered.includes(item.linkItem));
+              const newPosts = parsedData.posts.filter((item) => filtered.includes(item.linkItem));
 
               const newLinks = newPosts.reduce((acc, item, index) => {
                 const post = {
