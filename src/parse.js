@@ -10,6 +10,7 @@ const parse = (response) => {
   const link = channel.querySelector('link').textContent;
 
   const elements = channel.querySelectorAll('item');
+
   const items = [...elements].map((element) => {
     const titleItem = element.querySelector('title').textContent;
     const linkItem = element.querySelector('link').textContent;

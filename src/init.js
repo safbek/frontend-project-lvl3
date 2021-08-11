@@ -35,7 +35,7 @@ const init = async () => {
   const form = document.querySelector('.rss-form');
   const feeds = document.querySelector('.feeds');
   const posts = document.querySelector('.posts');
-  // const watchedState = onChange(state, render);
+
   const watchedState = watcher(i18Instance, state, feeds, posts);
 
   if (form) {

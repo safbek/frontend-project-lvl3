@@ -15,9 +15,10 @@ const generateId = (parsedData, link) => {
   const posts = parsedData.items.reduce((acc, item) => {
     const post = {
       id: _.uniqueId(),
-      title: item.titleItem,
-      description: item.postDescription,
-      link: item.linkItem,
+      ...item,
+      // title: item.titleItem,
+      // description: item.postDescription,
+      // link: item.linkItem,
     };
     acc.push(post);
     return acc;
