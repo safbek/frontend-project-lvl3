@@ -8,18 +8,20 @@ const axios = require('axios');
 const generateId = (parsedData, link) => {
   const feed = {
     id: _.uniqueId(),
-    title: parsedData.title,
-    description: parsedData.description,
+    titel: parsedData.postTitle,
+    description: parsedData.postDescription,
     link,
   };
   const posts = parsedData.items.reduce((acc, item) => {
+    // console.log(item);
     const post = {
       id: _.uniqueId(),
-      ...item,
-      // title: item.titleItem,
-      // description: item.postDescription,
-      // link: item.linkItem,
+      // ...item,
+      title: item.postTitle,
+      description: item.postDescription,
+      link: item.postLink,
     };
+    console.log(post);
     acc.push(post);
     return acc;
   }, []);
