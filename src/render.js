@@ -56,8 +56,8 @@ const renderPosts = (container, posts, i18Instance) => {
     const a = document.createElement('a');
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', 'blank');
-    a.textContent = post.title;
-    a.href = post.link;
+    a.textContent = post.postTitle;
+    a.href = post.postLink;
     a.classList.add('fw-bold');
 
     const button = document.createElement('button');
@@ -83,8 +83,6 @@ const renderPosts = (container, posts, i18Instance) => {
 
 const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, value) => {
   const feedback = document.querySelector('.feedback');
-  // const feeds = document.querySelector('.feeds');
-  // const posts = document.querySelector('.posts');
   const form = document.querySelector('.form-control');
 
   switch (path) {

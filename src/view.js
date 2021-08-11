@@ -16,9 +16,10 @@ const generateId = (parsedData, link) => {
     // console.log(item);
     const post = {
       id: _.uniqueId(),
-      title: item.postTitle,
-      description: item.postDescription,
-      link: item.postLink,
+      ...item,
+      // title: item.postTitle,
+      // description: item.postDescription,
+      // link: item.postLink,
     };
     // console.log(post);
     acc.push(post);
