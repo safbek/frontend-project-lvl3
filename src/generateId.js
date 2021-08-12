@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
-const generateId = (parsedData, link) => {
+const generateId = (parsedData, rssLink) => {
   const feed = {
     id: _.uniqueId(),
     title: parsedData.feedTitle,
     description: parsedData.feedDescription,
-    link,
+    rssLink,
   };
   const posts = parsedData.posts.reduce((acc, item) => {
     const post = {

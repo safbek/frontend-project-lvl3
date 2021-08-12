@@ -93,6 +93,7 @@ const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, val
         form.value = '';
         form.focus();
         form.classList.remove('is-invalid');
+        // feedback.textContent = i18Instance.t('rssAddedSuccessfully');
       } else {
         feedback.classList.remove('text-success');
         feedback.classList.add('text-danger');
