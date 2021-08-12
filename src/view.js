@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import onChange from 'on-change';
 import _ from 'lodash';
 import parse from './parse';
+import updatePosts from './updatePosts';
 
 const axios = require('axios');
 
@@ -13,15 +14,10 @@ const generateId = (parsedData, link) => {
     link,
   };
   const posts = parsedData.posts.reduce((acc, item) => {
-    // console.log(item);
     const post = {
       id: _.uniqueId(),
       ...item,
-      // title: item.postTitle,
-      // description: item.postDescription,
-      // link: item.postLink,
     };
-    // console.log(post);
     acc.push(post);
     return acc;
   }, []);
@@ -71,6 +67,9 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
       stateProxy.validationState.valid = true;
       feedback.textContent = i18Instance.t('rssAddedSuccessfully');
       stateProxy.validationState.state = 'filling';
+
+      // download new posts
+      updatePosts(axios, originalState, stateProxy);
     })
     .catch((e) => {
       stateProxy.validationState.valid = false;
@@ -86,36 +85,6 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
     })
     .finally(() => {
       stateProxy.validationState.state = 'filling';
-      setTimeout(function updatePosts() {
-        originalState.updates.feeds.forEach((feed) => {
-          axios(feed.link)
-            .then((response) => {
-              const parsedData = parse(response.data);
-
-              const newPostLinks = parsedData.posts.map((item) => item.linkItem);
-              const currentPostLinks = originalState.updates.posts.map((item) => item.link);
-              const filtered = newPostLinks.filter((link) => !currentPostLinks.includes(link));
-
-              const newPosts = parsedData.posts.filter((item) => filtered.includes(item.linkItem));
-
-              const newLinks = newPosts.reduce((acc, item, index) => {
-                const post = {
-                  id: index,
-                  feedId: feed.id,
-                  title: item.titleItem,
-                  link: item.linkItem,
-                };
-                acc.push(post);
-                return acc;
-              }, []);
-
-              if (newLinks.length > 0 && !currentPostLinks.includes(newLinks.link)) {
-                stateProxy.updates.posts.push(...newLinks);
-              }
-            });
-        });
-        setTimeout(updatePosts, 5000);
-      }, 5000);
     });
 });
 

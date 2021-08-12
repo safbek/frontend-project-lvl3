@@ -32,6 +32,7 @@ const init = async () => {
       openPosts: new Set(),
     },
   };
+  console.log(state);
   const form = document.querySelector('.rss-form');
   const feeds = document.querySelector('.feeds');
   const posts = document.querySelector('.posts');
