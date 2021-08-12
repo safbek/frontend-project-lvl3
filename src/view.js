@@ -1,29 +1,10 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
-import _ from 'lodash';
 import parse from './parse';
 import updatePosts from './updatePosts';
+import generateId from './generateId';
 
 const axios = require('axios');
-
-const generateId = (parsedData, link) => {
-  const feed = {
-    id: _.uniqueId(),
-    title: parsedData.feedTitle,
-    description: parsedData.feedDescription,
-    link,
-  };
-  const posts = parsedData.posts.reduce((acc, item) => {
-    const post = {
-      id: _.uniqueId(),
-      ...item,
-    };
-    acc.push(post);
-    return acc;
-  }, []);
-
-  return { feed, posts };
-};
 
 // HANDELER ****************************************************
 const fetchFeeds = ((state, i18Instance) => (event) => {
