@@ -1,10 +1,32 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
+import _ from 'lodash';
 import parse from './parse';
 import updatePosts from './updatePosts';
-import generateId from './generateId';
+// import generateId from './generateId';
 
 const axios = require('axios');
+
+const generateId = (parsedData, link) => {
+  const feed = {
+    id: _.uniqueId(),
+    title: parsedData.feedTitle,
+    description: parsedData.feedDescription,
+    link,
+  };
+  console.log(feed);
+
+  const posts = parsedData.posts.reduce((acc, item) => {
+    const post = {
+      id: _.uniqueId(),
+      ...item,
+    };
+    acc.push(post);
+    return acc;
+  }, []);
+
+  return { feed, posts };
+};
 
 // HANDELER ****************************************************
 const fetchFeeds = ((state, i18Instance) => (event) => {
@@ -14,7 +36,7 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
 
   const feedback = document.querySelector('.feedback');
 
-  const links = stateProxy.updates.feeds.map((item) => item.link);
+  const links = stateProxy.updates.feeds.map((item) => item.rssLink);
 
   const validUrlSchema = yup.string().url().notOneOf(links);
   const originalState = onChange.target(state);
@@ -30,12 +52,18 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
     .then(() => axios(href))
     .then((response) => {
       if (!parse(response.data.contents)) {
+        console.log('noValid');
         stateProxy.validationState.valid = false;
         feedback.textContent = i18Instance.t('parseError');
       }
-      return parse(response.data.contents);
+      // console.log(parse(response.data.contents));
+      const datas = parse(response.data.contents);
+      // return parse(response.data.contents);
+      console.log(datas);
+      return datas;
     })
     .then((data) => {
+      console.log(data);
       stateProxy.validationState.state = 'processing';
 
       const generatedFeed = generateId(data, rssLink);
@@ -53,6 +81,7 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
       updatePosts(axios, originalState, stateProxy);
     })
     .catch((e) => {
+      console.log(e);
       stateProxy.validationState.valid = false;
       if (e.message === 'Network Error') {
         feedback.textContent = i18Instance.t('networkError');

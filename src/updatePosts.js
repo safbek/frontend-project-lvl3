@@ -7,9 +7,7 @@ const updatePosts = (axios, originalState, stateProxy) => {
       axios(feed.link)
         .then((response) => {
           const parsedData = parse(response.data);
-          // console.log(parsedData);
           const newPostLinks = parsedData.posts.map((item) => item.postLink);
-          // console.log(newPostLinks);
           const currentPostLinks = originalState.updates.posts
             .flat()
             .map((item) => item.postLink);
