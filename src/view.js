@@ -14,7 +14,7 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
 
   const feedback = document.querySelector('.feedback');
 
-  const links = stateProxy.updates.feeds.map((item) => item.rssLink);
+  const links = stateProxy.updates.feeds.map((item) => item.link);
 
   const validUrlSchema = yup.string().url().notOneOf(links);
   const originalState = onChange.target(state);
