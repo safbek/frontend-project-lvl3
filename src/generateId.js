@@ -7,11 +7,8 @@ const generateId = (parsedData, link) => {
     description: parsedData.feedDescription,
     link,
   };
-  // console.log(parsedData);
-  // console.log(parsedData.posts);
 
   const posts = parsedData.posts.reduce((acc, item) => {
-    // console.log(item);
     const post = {
       id: _.uniqueId(),
       ...item,
