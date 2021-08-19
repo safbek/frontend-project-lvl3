@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import _ from 'lodash';
+// import _ from 'lodash';
 import onChange from 'on-change';
 import parse from './parse';
 import updatePosts from './updatePosts';
