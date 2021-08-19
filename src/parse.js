@@ -2,7 +2,9 @@ const parse = (response) => {
   const parseXml = new DOMParser();
   const xml = parseXml.parseFromString(response, 'text/xml');
   if (xml.getElementsByTagName('parsererror').length) {
-    return false;
+    const error = new Error();
+    error.isParseError = true;
+    throw error;
   }
   const channel = xml.querySelector('channel');
   const feedTitle = channel.querySelector('title').textContent;

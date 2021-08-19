@@ -8,8 +8,6 @@ const ru = {
     rssAddedSuccessfully: 'RSS успешно загружен',
     networkError: 'Ошибка сети',
     parseError: 'Ресурс не содержит валидный RSS',
-    missingFormState: 'Не предусмотрено такое состояние формы',
-    missingRenderCase: 'В рендере отсутствует отсутствует обработчик для этого случая',
   },
 };
 

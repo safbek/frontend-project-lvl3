@@ -97,6 +97,8 @@ const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, val
       } else {
         feedback.classList.remove('text-success');
         feedback.classList.add('text-danger');
+        // feedback.textContent = i18Instance.t('parseError');
+        // console.log('hhaaa');
       }
       break;
     }
