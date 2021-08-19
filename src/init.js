@@ -40,7 +40,7 @@ const init = async () => {
   const watchedState = watcher(i18Instance, state, feeds, posts);
 
   if (form) {
-    form.addEventListener('submit', fetchFeeds(watchedState, i18Instance));
+    form.addEventListener('submit', fetchFeeds(watchedState));
   }
   handleFullPost(watchedState, posts);
   getModal(watchedState, posts);

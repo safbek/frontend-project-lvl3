@@ -87,18 +87,24 @@ const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, val
 
   switch (path) {
     case 'validationState.valid': {
-      if (value) {
+      feedback.classList.remove('text-success');
+      feedback.classList.add('text-danger');
+      if (value === 'rssAddedSuccessfully') {
+        feedback.textContent = i18Instance.t('rssAddedSuccessfully');
         feedback.classList.add('text-success');
         feedback.classList.remove('text-danger');
         form.value = '';
         form.focus();
         form.classList.remove('is-invalid');
-        // feedback.textContent = i18Instance.t('rssAddedSuccessfully');
+      } else if (value === 'parseError') {
+        feedback.textContent = i18Instance.t('parseError');
+      } else if (value === 'networkError') {
+        feedback.textContent = i18Instance.t('networkError');
+      } else if (value === 'url') {
+        feedback.textContent = i18Instance.t('url');
+        form.classList.add('is-invalid');
       } else {
-        feedback.classList.remove('text-success');
-        feedback.classList.add('text-danger');
-        // feedback.textContent = i18Instance.t('parseError');
-        // console.log('hhaaa');
+        feedback.textContent = i18Instance.t('rssAlreadyExists');
       }
       break;
     }

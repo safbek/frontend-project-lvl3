@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-// import _ from 'lodash';
 import onChange from 'on-change';
 import parse from './parse';
 import updatePosts from './updatePosts';
@@ -20,14 +19,11 @@ const validUrlSchema = (rssLink) => {
 };
 
 // HANDELER ****************************************************
-const fetchFeeds = ((state, i18Instance) => (event) => {
+const fetchFeeds = ((state) => (event) => {
   const stateProxy = state;
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
 
-  const feedback = document.querySelector('.feedback');
-
-  // const validUrlSchema = yup.string().url().notOneOf(links);
   const originalState = onChange.target(state);
 
   const rssLink = document.querySelector('.input-value').value;
@@ -37,21 +33,7 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
 
   const { href } = proxy;
 
-  // const validUrlSchema = (rssLink3) => {
-  //   const schema = yup.string().url();
-  //   const link = rssLink3;
-  //   const promise = schema.validate(link)
-  //     .then(() => link)
-  //     .catch(() => {
-  //       const error2 = new Error();
-  //       error2.isValidationError = true;
-  //       throw error2;
-  //     });
-  //   return promise;
-  // };
-
   validUrlSchema(rssLink)
-    // .validate(rssLink)
     .then(() => {
       const links = stateProxy.updates.feeds.map((item) => item.link);
       if (links.includes(rssLink)) {
@@ -72,8 +54,7 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
       stateProxy.updates.feeds.push(feed);
       stateProxy.updates.posts.push(posts);
 
-      stateProxy.validationState.valid = true;
-      feedback.textContent = i18Instance.t('rssAddedSuccessfully');
+      stateProxy.validationState.valid = 'rssAddedSuccessfully';
       stateProxy.validationState.state = 'filling';
 
       // download new posts
@@ -81,25 +62,19 @@ const fetchFeeds = ((state, i18Instance) => (event) => {
       return data;
     })
     .catch((e) => {
-      console.log(e);
-      stateProxy.validationState.valid = false;
       if (e.isParseError) {
-        console.log('PARSEERROR');
-        feedback.textContent = i18Instance.t('parseError');
+        // console.log('PARSEERROR');
+        stateProxy.validationState.valid = 'parseError';
       } else if (axios.isAxiosError(e)) {
-        console.log('NETWORKERROR');
-        feedback.textContent = i18Instance.t('networkError');
+        // console.log('NETWORKERROR');
+        stateProxy.validationState.valid = 'networkError';
       } else if (e.isRssAlreadyExists) {
-        console.log('ALREADYEXISTS');
-        feedback.textContent = i18Instance.t('rssAlreadyExists');
+        // console.log('ALREADYEXISTS');
+        stateProxy.validationState.valid = 'rssAlreadyExists';
       } else if (e.isValidationError) {
-        console.log('VALIDATIONERROR');
-        feedback.textContent = i18Instance.t('url');
-        const form = document.querySelector('.form-control');
-        form.classList.add('is-invalid');
-        feedback.textContent = i18Instance.t('url');
+        // console.log('VALIDATIONERROR');
+        stateProxy.validationState.valid = 'url';
       } else {
-        console.log(e);
         throw new Error('unknown error');
       }
     })
