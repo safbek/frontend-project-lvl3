@@ -5,8 +5,6 @@ import ru from './dictionaries';
 
 import fetchFeeds from './view';
 import watcher from './render';
-// import handleFullPost from './handleFullPost';
-// import getModal from './getModal';
 
 const init = async () => {
   const i18Instance = i18next.createInstance();
@@ -43,8 +41,6 @@ const init = async () => {
   if (form) {
     form.addEventListener('submit', fetchFeeds(watchedState, posts));
   }
-  // handleFullPost(watchedState, posts);
-  // getModal(watchedState, posts);
 };
 
 export default init;

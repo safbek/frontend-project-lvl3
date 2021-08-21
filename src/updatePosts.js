@@ -18,8 +18,6 @@ const updatePosts = (axios, originalState, stateProxy) => {
 
           const newLinks = newPosts.reduce((acc, item) => {
             const post = {
-            // id: index,
-            // feedId: feed.id,
               id: _.uniqueId(),
               feedId: _.uniqueId(),
               title: item.postTitle,

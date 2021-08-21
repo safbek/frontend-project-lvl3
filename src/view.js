@@ -42,6 +42,13 @@ const getModal = ((state, posts) => {
   });
 });
 
+const proxify = (rssLink) => {
+  const proxy = new URL('https://hexlet-allorigins.herokuapp.com/get');
+  proxy.searchParams.set('disableCache', 'true');
+  proxy.searchParams.set('url', rssLink);
+  return proxy;
+};
+
 // HANDELER ****************************************************
 const fetchFeeds = ((state, postContainer) => (event) => {
   const stateProxy = state;
@@ -51,11 +58,11 @@ const fetchFeeds = ((state, postContainer) => (event) => {
   const originalState = onChange.target(state);
 
   const rssLink = document.querySelector('.input-value').value;
-  const proxy = new URL('https://hexlet-allorigins.herokuapp.com/get');
-  proxy.searchParams.set('disableCache', 'true');
-  proxy.searchParams.set('url', rssLink);
+  // const proxy = new URL('https://hexlet-allorigins.herokuapp.com/get');
+  // proxy.searchParams.set('disableCache', 'true');
+  // proxy.searchParams.set('url', rssLink);
 
-  const { href } = proxy;
+  const { href } = proxify(rssLink);
 
   handleFullPost(state, postContainer);
   getModal(state, postContainer);
