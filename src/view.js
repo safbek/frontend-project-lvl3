@@ -43,7 +43,7 @@ const getModal = ((state, posts) => {
 });
 
 // HANDELER ****************************************************
-const fetchFeeds = ((state, posts) => (event) => {
+const fetchFeeds = ((state, postContainer) => (event) => {
   const stateProxy = state;
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
@@ -57,8 +57,8 @@ const fetchFeeds = ((state, posts) => (event) => {
 
   const { href } = proxy;
 
-  handleFullPost(state, posts);
-  getModal(state, posts);
+  handleFullPost(state, postContainer);
+  getModal(state, postContainer);
 
   validUrlSchema(rssLink)
     .then(() => {
@@ -76,10 +76,10 @@ const fetchFeeds = ((state, posts) => (event) => {
 
       const generatedFeed = generateId(data, rssLink);
       const { feed } = generatedFeed;
-      const { post } = generatedFeed;
+      const { posts } = generatedFeed;
 
       stateProxy.updates.feeds.push(feed);
-      stateProxy.updates.posts.push(post);
+      stateProxy.updates.posts.push(posts);
 
       stateProxy.validationState.valid = 'rssAddedSuccessfully';
       stateProxy.validationState.state = 'filling';
