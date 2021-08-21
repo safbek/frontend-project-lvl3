@@ -5,8 +5,8 @@ import ru from './dictionaries';
 
 import fetchFeeds from './view';
 import watcher from './render';
-import handleFullPost from './handleFullPost';
-import getModal from './getModal';
+// import handleFullPost from './handleFullPost';
+// import getModal from './getModal';
 
 const init = async () => {
   const i18Instance = i18next.createInstance();
@@ -30,6 +30,7 @@ const init = async () => {
     },
     uiState: {
       openPosts: new Set(),
+      openModal: [],
     },
   };
   console.log(state);
@@ -40,10 +41,10 @@ const init = async () => {
   const watchedState = watcher(i18Instance, state, feeds, posts);
 
   if (form) {
-    form.addEventListener('submit', fetchFeeds(watchedState));
+    form.addEventListener('submit', fetchFeeds(watchedState, posts));
   }
-  handleFullPost(watchedState, posts);
-  getModal(watchedState, posts);
+  // handleFullPost(watchedState, posts);
+  // getModal(watchedState, posts);
 };
 
 export default init;

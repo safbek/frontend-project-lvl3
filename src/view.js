@@ -18,8 +18,32 @@ const validUrlSchema = (rssLink) => {
   return promise;
 };
 
+const handleFullPost = ((state, posts) => {
+  posts.addEventListener('click', (e) => {
+    const postId = e.target.dataset.id;
+    if (postId) {
+      const openedPost = state.updates.posts.flat().find((post) => post.id === postId);
+      state.uiState.openPosts.add(openedPost.id);
+    }
+  });
+});
+
+const getModal = ((state, posts) => {
+  const stateProxy = state;
+
+  posts.addEventListener('click', (e) => {
+    const postId = e.target.dataset.id;
+    if (postId) {
+      const openedPost = stateProxy.updates.posts.flat().find((post) => post.id === postId);
+      stateProxy.uiState.openPosts.add(openedPost.id);
+
+      stateProxy.uiState.openModal.push(openedPost);
+    }
+  });
+});
+
 // HANDELER ****************************************************
-const fetchFeeds = ((state) => (event) => {
+const fetchFeeds = ((state, posts) => (event) => {
   const stateProxy = state;
   event.preventDefault();
   stateProxy.validationState.state = 'processing';
@@ -32,6 +56,9 @@ const fetchFeeds = ((state) => (event) => {
   proxy.searchParams.set('url', rssLink);
 
   const { href } = proxy;
+
+  handleFullPost(state, posts);
+  getModal(state, posts);
 
   validUrlSchema(rssLink)
     .then(() => {
@@ -49,10 +76,10 @@ const fetchFeeds = ((state) => (event) => {
 
       const generatedFeed = generateId(data, rssLink);
       const { feed } = generatedFeed;
-      const { posts } = generatedFeed;
+      const { post } = generatedFeed;
 
       stateProxy.updates.feeds.push(feed);
-      stateProxy.updates.posts.push(posts);
+      stateProxy.updates.posts.push(post);
 
       stateProxy.validationState.valid = 'rssAddedSuccessfully';
       stateProxy.validationState.state = 'filling';

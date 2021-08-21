@@ -133,6 +133,20 @@ const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, val
       });
       break;
     }
+    case 'uiState.openModal': {
+      // to pass data into modal
+      // console.log('kkkkkkkkkkkkkkkkk');
+      const openedPost = value[value.length - 1];
+      const modalTitle = document.querySelector('.modal-title');
+      const modalBody = document.querySelector('.modal-body');
+      modalTitle.textContent = openedPost.postTitle;
+      modalBody.textContent = openedPost.postDescription;
+
+      // // access to full article
+      const fullArticleLink = document.querySelector('.full-article');
+      fullArticleLink.setAttribute('href', openedPost.postLink);
+      break;
+    }
     case 'updates.feeds': {
       renderFeed(feeds, value, i18Instance);
       break;

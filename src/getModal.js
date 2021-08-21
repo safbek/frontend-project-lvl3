@@ -1,8 +1,6 @@
 const getModal = ((state, posts) => {
   const stateProxy = state;
 
-  // const posts = document.querySelector('.posts');
-
   posts.addEventListener('click', (e) => {
     const postId = e.target.dataset.id;
     if (postId) {
