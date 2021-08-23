@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
+import _ from 'lodash';
 import parse from './parse';
 import updatePosts from './updatePosts';
-import generateId from './generateId';
 
 const axios = require('axios');
 
@@ -75,12 +75,27 @@ const fetchFeeds = ((state, postContainer) => (event) => {
       return axios(href);
     })
     .then((response) => {
-      const data = parse(response.data.contents);
+      const parsedData = parse(response.data.contents);
       stateProxy.validationState.state = 'processing';
 
-      const generatedFeed = generateId(data, rssLink);
-      const { feed } = generatedFeed;
-      const { posts } = generatedFeed;
+      // const generatedFeed = generateId(data);
+      // const { feed } = generatedFeed;
+      // const { posts } = generatedFeed;
+      const feed = {
+        id: _.uniqueId(),
+        title: parsedData.title,
+        description: parsedData.description,
+        link: parsedData.link,
+      };
+
+      const posts = parsedData.posts.reduce((acc, items) => {
+        const post = {
+          id: _.uniqueId(),
+          ...items,
+        };
+        acc.push(post);
+        return acc;
+      }, []);
 
       stateProxy.updates.feeds.push(feed);
       stateProxy.updates.posts.push(posts);
@@ -90,7 +105,7 @@ const fetchFeeds = ((state, postContainer) => (event) => {
 
       // download new posts
       updatePosts(axios, originalState, stateProxy);
-      return data;
+      return parsedData;
     })
     .catch((e) => {
       if (e.isParseError) {
