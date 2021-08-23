@@ -67,6 +67,8 @@ const fetchFeeds = ((state, postContainer) => (event) => {
   validUrlSchema(rssLink)
     .then(() => {
       const links = stateProxy.updates.feeds.map((item) => item.link);
+      console.log(links);
+      console.log(rssLink);
       if (links.includes(rssLink)) {
         const error1 = new Error();
         error1.isRssAlreadyExists = true;
@@ -85,7 +87,7 @@ const fetchFeeds = ((state, postContainer) => (event) => {
         id: _.uniqueId(),
         title: parsedData.title,
         description: parsedData.description,
-        link: parsedData.link,
+        link: rssLink,
       };
 
       const posts = parsedData.posts.reduce((acc, items) => {
