@@ -58,9 +58,6 @@ const fetchFeeds = ((state, postContainer) => (event) => {
   const originalState = onChange.target(state);
 
   const rssLink = document.querySelector('.input-value').value;
-  // const proxy = new URL('https://hexlet-allorigins.herokuapp.com/get');
-  // proxy.searchParams.set('disableCache', 'true');
-  // proxy.searchParams.set('url', rssLink);
 
   const { href } = proxify(rssLink);
 

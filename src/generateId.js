@@ -3,8 +3,8 @@ import _ from 'lodash';
 const generateId = (parsedData, link) => {
   const feed = {
     id: _.uniqueId(),
-    title: parsedData.feedTitle,
-    description: parsedData.feedDescription,
+    title: parsedData.title,
+    description: parsedData.description,
     link,
   };
 

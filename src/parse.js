@@ -6,21 +6,25 @@ const parse = (response) => {
     error.isParseError = true;
     throw error;
   }
+
   const channel = xml.querySelector('channel');
-  const feedTitle = channel.querySelector('title').textContent;
-  const feedDescription = channel.querySelector('description').textContent;
-  const feedLink = channel.querySelector('link').textContent;
+  const title = channel.querySelector('title').textContent;
+  const description = channel.querySelector('description').textContent;
+  const link = channel.querySelector('link').textContent;
 
   const elements = channel.querySelectorAll('item');
-
   const posts = [...elements].map((element) => {
-    const postTitle = element.querySelector('title').textContent;
-    const postLink = element.querySelector('link').textContent;
-    const postDescription = element.querySelector('description').textContent;
-    return { postTitle, postLink, postDescription };
+    const itemTitle = element.querySelector('title').textContent;
+    const itemLink = element.querySelector('link').textContent;
+    const itemDescription = element.querySelector('description').textContent;
+    return {
+      title: itemTitle,
+      link: itemLink,
+      description: itemDescription,
+    };
   });
   return {
-    feedTitle, feedDescription, feedLink, posts,
+    title, description, link, posts,
   };
 };
 
