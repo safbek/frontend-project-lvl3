@@ -56,8 +56,8 @@ const renderPosts = (container, posts, i18Instance) => {
     const a = document.createElement('a');
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', 'blank');
-    a.textContent = post.postTitle;
-    a.href = post.postLink;
+    a.textContent = post.title;
+    a.href = post.link;
     a.classList.add('fw-bold');
 
     const button = document.createElement('button');
@@ -138,12 +138,12 @@ const watcher = (i18Instance, state, feeds, posts) => onChange(state, (path, val
       const openedPost = value[value.length - 1];
       const modalTitle = document.querySelector('.modal-title');
       const modalBody = document.querySelector('.modal-body');
-      modalTitle.textContent = openedPost.postTitle;
-      modalBody.textContent = openedPost.postDescription;
+      modalTitle.textContent = openedPost.title;
+      modalBody.textContent = openedPost.description;
 
       // // access to full article
       const fullArticleLink = document.querySelector('.full-article');
-      fullArticleLink.setAttribute('href', openedPost.postLink);
+      fullArticleLink.setAttribute('href', openedPost.link);
       break;
     }
     case 'updates.feeds': {
