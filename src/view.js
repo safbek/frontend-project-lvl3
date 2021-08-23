@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import onChange from 'on-change';
 import _ from 'lodash';
 import parse from './parse';
-import updatePosts from './updatePosts';
+// import updatePosts from './updatePosts';
 
 const axios = require('axios');
 
@@ -67,8 +67,6 @@ const fetchFeeds = ((state, postContainer) => (event) => {
   validUrlSchema(rssLink)
     .then(() => {
       const links = stateProxy.updates.feeds.map((item) => item.link);
-      console.log(links);
-      console.log(rssLink);
       if (links.includes(rssLink)) {
         const error1 = new Error();
         error1.isRssAlreadyExists = true;
@@ -106,7 +104,40 @@ const fetchFeeds = ((state, postContainer) => (event) => {
       stateProxy.validationState.state = 'filling';
 
       // download new posts
-      updatePosts(axios, originalState, stateProxy);
+      // updatePosts(axios, originalState, stateProxy);
+      setTimeout(function update() {
+        originalState.updates.feeds.forEach((f) => {
+          const link = proxify(f.link);
+          axios(link)
+            .then((r) => {
+              const p = parse(r.data);
+              const newPostLinks = p.posts.map((item) => item.link);
+              const currentPostLinks = originalState.updates.posts
+                .flat()
+                .map((item) => item.link);
+
+              const filtered = newPostLinks.filter((l) => !currentPostLinks.includes(l));
+
+              const newPosts = p.posts.filter((item) => filtered.includes(item.link));
+
+              const newLinks = newPosts.reduce((acc, item) => {
+                const post = {
+                  id: _.uniqueId(),
+                  feedId: _.uniqueId(),
+                  title: item.title,
+                  link: item.link,
+                };
+                acc.push(post);
+                return acc;
+              }, []);
+
+              if (newLinks.length > 0 && !currentPostLinks.includes(newLinks.link)) {
+                stateProxy.updates.posts.push(...newLinks);
+              }
+            });
+        });
+        setTimeout(update, 5000);
+      }, 5000);
       return parsedData;
     })
     .catch((e) => {
