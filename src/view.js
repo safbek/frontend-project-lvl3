@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import onChange from 'on-change';
 import _ from 'lodash';
 import parse from './parse';
-// import updatePosts from './updatePosts';
 
 const axios = require('axios');
 
@@ -78,9 +77,6 @@ const fetchFeeds = ((state, postContainer) => (event) => {
       const parsedData = parse(response.data.contents);
       stateProxy.validationState.state = 'processing';
 
-      // const generatedFeed = generateId(data);
-      // const { feed } = generatedFeed;
-      // const { posts } = generatedFeed;
       const feed = {
         id: _.uniqueId(),
         title: parsedData.title,
@@ -104,21 +100,20 @@ const fetchFeeds = ((state, postContainer) => (event) => {
       stateProxy.validationState.state = 'filling';
 
       // download new posts
-      // updatePosts(axios, originalState, stateProxy);
       setTimeout(function update() {
-        originalState.updates.feeds.forEach((f) => {
-          const link = proxify(f.link);
+        originalState.updates.feeds.forEach((itemFeed) => {
+          const link = proxify(itemFeed.link);
           axios(link)
-            .then((r) => {
-              const p = parse(r.data);
-              const newPostLinks = p.posts.map((item) => item.link);
+            .then((res) => {
+              const data = parse(res.data);
+              const newPostLinks = data.posts.map((item) => item.link);
               const currentPostLinks = originalState.updates.posts
                 .flat()
                 .map((item) => item.link);
 
-              const filtered = newPostLinks.filter((l) => !currentPostLinks.includes(l));
+              const filtered = newPostLinks.filter((item) => !currentPostLinks.includes(item));
 
-              const newPosts = p.posts.filter((item) => filtered.includes(item.link));
+              const newPosts = data.posts.filter((item) => filtered.includes(item.link));
 
               const newLinks = newPosts.reduce((acc, item) => {
                 const post = {
