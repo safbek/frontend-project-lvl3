@@ -9,10 +9,9 @@ const validUrlSchema = (rssLink) => {
   const schema = yup.string().url();
   const promise = schema.validate(rssLink)
     .then(() => rssLink)
-    .catch(() => {
-      const error2 = new Error();
-      error2.isValidationError = true;
-      throw error2;
+    .catch((e) => {
+      e.isValidationError = true;
+      throw e;
     });
   return promise;
 };
