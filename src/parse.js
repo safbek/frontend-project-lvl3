@@ -13,7 +13,7 @@ const parse = (response) => {
   const link = channel.querySelector('link').textContent;
 
   const elements = channel.querySelectorAll('item');
-  const posts = [...elements].map((element) => {
+  const items = [...elements].map((element) => {
     const itemTitle = element.querySelector('title').textContent;
     const itemLink = element.querySelector('link').textContent;
     const itemDescription = element.querySelector('description').textContent;
@@ -24,7 +24,7 @@ const parse = (response) => {
     };
   });
   return {
-    title, description, link, posts,
+    title, description, link, items,
   };
 };
 

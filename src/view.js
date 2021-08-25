@@ -66,14 +66,16 @@ const fetchFeeds = ((state, postContainer) => (event) => {
     .then(() => {
       const links = stateProxy.updates.feeds.map((item) => item.link);
       if (links.includes(rssLink)) {
-        const error1 = new Error();
-        error1.isRssAlreadyExists = true;
-        throw error1;
+        const e = new Error();
+        e.isRssAlreadyExists = true;
+        throw e;
       }
       return axios(href);
     })
     .then((response) => {
       const parsedData = parse(response.data.contents);
+      console.log(parsedData);
+
       stateProxy.validationState.state = 'processing';
 
       const feed = {
@@ -83,7 +85,8 @@ const fetchFeeds = ((state, postContainer) => (event) => {
         link: rssLink,
       };
 
-      const posts = parsedData.posts.reduce((acc, items) => {
+      const posts = parsedData.items.reduce((acc, items) => {
+        console.log(items);
         const post = {
           id: _.uniqueId(),
           ...items,
@@ -105,14 +108,14 @@ const fetchFeeds = ((state, postContainer) => (event) => {
           axios(link)
             .then((res) => {
               const data = parse(res.data);
-              const newPostLinks = data.posts.map((item) => item.link);
+              const newPostLinks = data.items.map((item) => item.link);
               const currentPostLinks = originalState.updates.posts
                 .flat()
                 .map((item) => item.link);
 
               const filtered = newPostLinks.filter((item) => !currentPostLinks.includes(item));
 
-              const newPosts = data.posts.filter((item) => filtered.includes(item.link));
+              const newPosts = data.items.filter((item) => filtered.includes(item.link));
 
               const newLinks = newPosts.reduce((acc, item) => {
                 const post = {
