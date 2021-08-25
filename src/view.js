@@ -66,15 +66,14 @@ const fetchFeeds = ((state, postContainer) => (event) => {
     .then(() => {
       const links = stateProxy.updates.feeds.map((item) => item.link);
       if (links.includes(rssLink)) {
-        const e = new Error();
-        e.isRssAlreadyExists = true;
-        throw e;
+        const error = new Error();
+        error.isRssAlreadyExists = true;
+        throw error;
       }
       return axios(href);
     })
     .then((response) => {
       const parsedData = parse(response.data.contents);
-      console.log(parsedData);
 
       stateProxy.validationState.state = 'processing';
 
@@ -86,7 +85,6 @@ const fetchFeeds = ((state, postContainer) => (event) => {
       };
 
       const posts = parsedData.items.reduce((acc, items) => {
-        console.log(items);
         const post = {
           id: _.uniqueId(),
           ...items,
@@ -105,22 +103,20 @@ const fetchFeeds = ((state, postContainer) => (event) => {
       setTimeout(function update() {
         originalState.updates.feeds.forEach((itemFeed) => {
           const link = proxify(itemFeed.link);
-          axios(link)
+          const proxifiedLink = link.href;
+
+          axios(proxifiedLink)
             .then((res) => {
-              const data = parse(res.data);
-              const newPostLinks = data.items.map((item) => item.link);
-              const currentPostLinks = originalState.updates.posts
-                .flat()
-                .map((item) => item.link);
+              const data = parse(res.data.contents);
 
-              const filtered = newPostLinks.filter((item) => !currentPostLinks.includes(item));
+              const postLinks = data.items.map((item) => item.link);
+              const currentPostLinks = originalState.updates.posts.flat().map((item) => item.link);
 
-              const newPosts = data.items.filter((item) => filtered.includes(item.link));
+              const newPostLinks = _.differenceBy(postLinks, currentPostLinks);
 
-              const newLinks = newPosts.reduce((acc, item) => {
+              const newLinks = newPostLinks.reduce((acc, item) => {
                 const post = {
                   id: _.uniqueId(),
-                  feedId: _.uniqueId(),
                   title: item.title,
                   link: item.link,
                 };
@@ -139,16 +135,12 @@ const fetchFeeds = ((state, postContainer) => (event) => {
     })
     .catch((e) => {
       if (e.isParseError) {
-        // console.log('PARSEERROR');
         stateProxy.validationState.valid = 'parseError';
       } else if (axios.isAxiosError(e)) {
-        // console.log('NETWORKERROR');
         stateProxy.validationState.valid = 'networkError';
       } else if (e.isRssAlreadyExists) {
-        // console.log('ALREADYEXISTS');
         stateProxy.validationState.valid = 'rssAlreadyExists';
       } else if (e.isValidationError) {
-        // console.log('VALIDATIONERROR');
         stateProxy.validationState.valid = 'url';
       } else {
         throw new Error('unknown error');

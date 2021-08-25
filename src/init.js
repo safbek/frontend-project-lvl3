@@ -31,7 +31,6 @@ const init = async () => {
       openModal: [],
     },
   };
-  console.log(state);
 
   const form = document.querySelector('.rss-form');
   const feeds = document.querySelector('.feeds');
